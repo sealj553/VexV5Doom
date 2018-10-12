@@ -71,10 +71,11 @@ clean:
 
 $(OUTBIN): $(OUTELF) $(BINDIR)
 	@echo -n "Creating $@ for $(DEVICE) "
-	//$(call test_output,$D$(OBJCOPY) $< -O binary $@,$(DONE_STRING))
-	$D$(OBJCOPY) $< -O binary $@
+	$(call test_output,$D$(OBJCOPY) $< -O binary $@,$(DONE_STRING))
 
 $(OUTELF): $(call GETALLOBJ,$(EXCLUDE_SRCDIRS))
+	@echo "Linking $(LIBRARIES)"
+
 	$(call _pros_ld_timestamp)
 	@echo -n "Linking project with $(ARCHIVE_TEXT_LIST) "
 	$(call test_output,$D$(LD) $(LDFLAGS) $^ $(LDTIMEOBJ) $(LIBRARIES) -o $@,$(OK_STRING))
