@@ -24,17 +24,8 @@
 #include <ctype.h>
 #include <errno.h>
 
-#ifdef _WIN32
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#include <io.h>
-#ifdef _MSC_VER
-#include <direct.h>
-#endif
-#else
-#include <sys/stat.h>
-#include <sys/types.h>
-#endif
+//#include <sys/stat.h>
+//#include <sys/types.h>
 
 #include "doomtype.h"
 
@@ -48,53 +39,20 @@
 #include "w_wad.h"
 #include "z_zone.h"
 
-#include "ff.h"
-
 //
 // Create a directory
 //
 
+//TODO:fix
 void M_MakeDirectory(char *path)
 {
-#ifdef _WIN32
-    mkdir(path);
-#else
-	#if ORIGCODE
-    mkdir(path, 0755);
-	#else
-    FRESULT res;
-    char* path_mod;
-    int len;
-
-    // remove trailing slash
-    len = strlen (path);
-
-    path_mod = (char*)malloc (len + 1);
-
-    strncpy (path_mod, path, len);
-
-    if (path_mod[len - 1] == '/')
-    {
-    	path_mod[len - 1] = 0;
-    }
-
-    res = f_mkdir (path_mod);
-
-    if ((res != FR_OK) && (res != FR_EXIST))
-    {
-    	I_Error ("M_MakeDirectory: path = '%s', path_mod = '%s', res = %i", path, path_mod, res);
-    }
-
-    free (path_mod);
-	#endif
-#endif
+    //mkdir(path, 0755);
 }
 
 // Check if a file exists
 
 boolean M_FileExists(char *filename)
 {
-#if ORIGCODE
     FILE *fstream;
 
     fstream = fopen(filename, "r");
@@ -111,22 +69,11 @@ boolean M_FileExists(char *filename)
 
         return errno == EISDIR;
     }
-#else
-	FILINFO fno;
-
-	if (f_stat (filename, &fno) != FR_OK)
-	{
-		return false;
-	}
-	
-	return true;
-#endif
 }
 
 //
 // Determine the length of an open file.
 //
-#if ORIGCODE
 long M_FileLength(FILE *handle)
 { 
     long savedpos;
@@ -144,18 +91,11 @@ long M_FileLength(FILE *handle)
 
     return length;
 }
-#else
-long M_FileLength(FIL *handle)
-{
-    return f_size (handle);
-}
-#endif
 
 
 //
 // M_WriteFile
 //
-#if ORIGCODE
 boolean M_WriteFile(char *name, void *source, int length)
 {
     FILE *handle;
@@ -174,39 +114,10 @@ boolean M_WriteFile(char *name, void *source, int length)
 		
     return true;
 }
-#else
-boolean M_WriteFile(char *name, void *source, int length)
-{
-	FIL file;
-	unsigned long c;
-
-	if (f_open (&file, name, FA_CREATE_ALWAYS | FA_WRITE) != FR_OK)
-	{
-		printf ("M_WriteFile: cannot create file %s\n", name);
-		return false;
-	}
-
-	if (f_writen (&file, source, length, &c) != FR_OK)
-	{
-		printf ("M_WriteFile: could not write to file %s\n", name);
-		return false;
-	}
-
-	f_close (&file);
-
-	if (c != length)
-	{
-		return false;
-	}
-
-	return true;
-}
-#endif
 
 //
 // M_ReadFile
 //
-#if ORIGCODE
 int M_ReadFile(char *name, byte **buffer)
 {
     FILE *handle;
@@ -232,28 +143,6 @@ int M_ReadFile(char *name, byte **buffer)
     *buffer = buf;
     return length;
 }
-#else
-int M_ReadFile(char *name, byte **buffer)
-{
-	FIL file;
-	int length;
-	byte		*buf;
-	unsigned long read;
-
-	if (f_open (&file, name, FA_OPEN_EXISTING | FA_READ) != FR_OK)
-	{
-		I_Error ("Couldn't read file %s", name);
-	}
-
-	length = f_size (&file);
-	buf = Z_Malloc (length, PU_STATIC, NULL);
-	f_readn (&file, buf, length, &read);
-	f_close (&file);
-
-	*buffer = buf;
-	return length;
-}
-#endif
 // Returns the path to a temporary file of the given name, stored
 // inside the system temporary directory.
 //

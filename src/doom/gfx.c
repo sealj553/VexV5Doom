@@ -17,12 +17,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "stm32f4xx.h"
-#include "ff.h"
+//#include "stm32f4xx.h"
+//#include "ff.h"
 #include "font.h"
 #include "gfx.h"
 #include "jpeg.h"
-#include "lcd.h"
+//#include "lcd.h"
 #include "main.h"
 
 /*---------------------------------------------------------------------*
@@ -40,7 +40,7 @@
  *  public data                                                        *
  *---------------------------------------------------------------------*/
 
-gfx_obj_t* gfx_objects[GFX_MAX_OBJECTS];
+//gfx_obj_t* gfx_objects[GFX_MAX_OBJECTS];
 
 /*---------------------------------------------------------------------*
  *  private data                                                       *
@@ -105,7 +105,7 @@ static inline char gfx_map_char (char chr)
  */
 static uint32_t gfx_convert_colormode (gfx_pixel_format_t pixel_format)
 {
-	switch (pixel_format)
+	/*switch (pixel_format)
 	{
 		case GFX_PIXEL_FORMAT_RGB565:
 			return DMA2D_RGB565;
@@ -116,7 +116,8 @@ static uint32_t gfx_convert_colormode (gfx_pixel_format_t pixel_format)
 		default:
 			fatal_error ("unknown pixel format");
 			return 0;
-	}
+	}*/
+    return 0;
 }
 
 /*
@@ -127,7 +128,8 @@ static uint32_t gfx_convert_colormode (gfx_pixel_format_t pixel_format)
  */
 static inline uint8_t gfx_bytes_per_pixel (gfx_image_t* img)
 {
-	switch (img->pixel_format)
+	/*
+    switch (img->pixel_format)
 	{
 		case GFX_PIXEL_FORMAT_RGB565:
 			return 2;
@@ -139,6 +141,8 @@ static inline uint8_t gfx_bytes_per_pixel (gfx_image_t* img)
 			fatal_error ("unknown pixel format");
 			return 0;
 	}
+    */
+    return ' ';
 }
 
 /*
@@ -151,6 +155,7 @@ static inline uint8_t gfx_bytes_per_pixel (gfx_image_t* img)
  */
 static inline void gfx_draw_pixel (gfx_image_t* img, uint16_t x, uint16_t y, uint32_t color)
 {
+    /*
 	switch (img->pixel_format)
 	{
 		case GFX_PIXEL_FORMAT_RGB565:
@@ -164,6 +169,7 @@ static inline void gfx_draw_pixel (gfx_image_t* img, uint16_t x, uint16_t y, uin
 		default:
 			fatal_error ("unknown pixel format");
 	}
+    */
 }
 
 /*
@@ -180,7 +186,8 @@ static inline void gfx_draw_pixel (gfx_image_t* img, uint16_t x, uint16_t y, uin
 #if 1
 static inline void gfx_blend_pixel (gfx_image_t* img, uint16_t x, uint16_t y, uint32_t color, uint8_t alpha)
 {
-	uint32_t color_back;
+	/*
+    uint32_t color_back;
 
 	uint8_t rf;
 	uint8_t gf;
@@ -251,6 +258,7 @@ static inline void gfx_blend_pixel (gfx_image_t* img, uint16_t x, uint16_t y, ui
 	}
 
 	gfx_draw_pixel (img, x, y, color);
+    */
 }
 #else
 /*
@@ -309,7 +317,7 @@ static inline void gfx_blend_pixel (gfx_image_t* img, uint16_t x, uint16_t y, ui
  */
 static void gfx_draw_img_rgb565 (gfx_image_t* img, gfx_coord_t* coord)
 {
-	DMA2D_InitTypeDef DMA2D_InitStruct;
+	/*DMA2D_InitTypeDef DMA2D_InitStruct;
 	DMA2D_FG_InitTypeDef DMA2D_FG_InitStruct;
 
 	uint32_t dest_address;
@@ -362,6 +370,7 @@ static void gfx_draw_img_rgb565 (gfx_image_t* img, gfx_coord_t* coord)
 	DMA2D_StartTransfer ();
 
 	while (DMA2D_GetFlagStatus (DMA2D_FLAG_TC) == RESET);
+    */
 }
 
 /*
@@ -372,7 +381,8 @@ static void gfx_draw_img_rgb565 (gfx_image_t* img, gfx_coord_t* coord)
  */
 static void gfx_draw_img_argb8888 (gfx_image_t* img, gfx_coord_t* coord)
 {
-	DMA2D_InitTypeDef DMA2D_InitStruct;
+	/*
+    DMA2D_InitTypeDef DMA2D_InitStruct;
 	DMA2D_FG_InitTypeDef DMA2D_FG_InitStruct;
 	DMA2D_BG_InitTypeDef DMA2D_BG_InitStruct;
 
@@ -434,6 +444,7 @@ static void gfx_draw_img_argb8888 (gfx_image_t* img, gfx_coord_t* coord)
 	DMA2D_StartTransfer ();
 
 	while (DMA2D_GetFlagStatus (DMA2D_FLAG_TC) == RESET);
+    */
 }
 
 /*
@@ -446,22 +457,25 @@ static void gfx_draw_img_argb8888 (gfx_image_t* img, gfx_coord_t* coord)
  */
 static void gfx_get_char_dimensions (const char chr, const gfx_font_t* font, uint16_t* width, uint16_t* height)
 {
+    /*
 	uint16_t char_offset;
 
 	if (font->bitmap_font)
 	{
-		/* get the font dimensions */
+		//get the font dimensions
 		*width = font->char_width;
 		*height = font->char_height;
 	}
 	else
 	{
-		/* get individual character dimensions */
+		//get individual character dimensions
 		char_offset = font->offsets[gfx_map_char (chr ) - 32];
 
 		*width = font->chars[char_offset + 1];
 		*height = font->chars[char_offset + 2] + font->chars[char_offset + 0]; // height + y_offset
+        
 	}
+    */
 }
 
 /*
@@ -476,6 +490,7 @@ static void gfx_get_char_dimensions (const char chr, const gfx_font_t* font, uin
  */
 static uint16_t gfx_measure_string (const char* str, const gfx_font_t* font, bool word_only, uint16_t* width, uint16_t* height)
 {
+    /*
 	uint16_t chars;
 	uint16_t char_width;
 	uint16_t char_height;
@@ -508,6 +523,8 @@ static uint16_t gfx_measure_string (const char* str, const gfx_font_t* font, boo
 	*width -= font->char_space;
 
 	return chars;
+    */
+    return 0;
 }
 
 /*---------------------------------------------------------------------*
@@ -519,7 +536,7 @@ static uint16_t gfx_measure_string (const char* str, const gfx_font_t* font, boo
  */
 void gfx_init (void)
 {
-	gfx_clear_screen (RGB565_WHITE);
+	//gfx_clear_screen (RGB565_WHITE);
 }
 
 /*
@@ -530,7 +547,7 @@ void gfx_init (void)
  */
 bool gfx_add_object (gfx_obj_t* obj)
 {
-	uint8_t i;
+	/*uint8_t i;
 
 	for (i = 0; i < GFX_MAX_OBJECTS; i++)
 	{
@@ -542,6 +559,8 @@ bool gfx_add_object (gfx_obj_t* obj)
 	}
 
 	return false;
+    */
+    return true;
 }
 
 /*
@@ -553,6 +572,7 @@ bool gfx_add_object (gfx_obj_t* obj)
  */
 bool gfx_delete_object (gfx_obj_t* obj)
 {
+    /*
 	uint8_t i;
 
 	for (i = 0; i < GFX_MAX_OBJECTS; i++)
@@ -565,6 +585,8 @@ bool gfx_delete_object (gfx_obj_t* obj)
 	}
 
 	return false;
+    */
+    return true;
 }
 
 /*
@@ -573,12 +595,14 @@ bool gfx_delete_object (gfx_obj_t* obj)
  */
 void gfx_delete_objects (void)
 {
+    /*
 	uint8_t i;
 
 	for (i = 0; i < GFX_MAX_OBJECTS; i++)
 	{
 		gfx_objects[i] = NULL;
 	}
+    */
 }
 
 /*
@@ -586,6 +610,7 @@ void gfx_delete_objects (void)
  */
 void gfx_draw_objects (void)
 {
+    /*
 	uint8_t i;
 
 	for (i = 0; i < GFX_MAX_OBJECTS; i++)
@@ -603,6 +628,7 @@ void gfx_draw_objects (void)
 			}
 		}
 	}
+    */
 }
 
 /*
@@ -611,7 +637,7 @@ void gfx_draw_objects (void)
  */
 void gfx_refresh (void)
 {
-	lcd_refresh ();
+	//lcd_refresh ();
 }
 
 /*
@@ -621,6 +647,7 @@ void gfx_refresh (void)
  */
 void gfx_clear_screen (uint16_t color)
 {
+    /*
 	DMA2D_InitTypeDef DMA2D_InitStruct;
 
 	DMA2D_DeInit ();
@@ -641,6 +668,7 @@ void gfx_clear_screen (uint16_t color)
 	DMA2D_StartTransfer ();
 
 	while (DMA2D_GetFlagStatus (DMA2D_FLAG_TC) == RESET);
+    */
 }
 
 /*
@@ -651,6 +679,7 @@ void gfx_clear_screen (uint16_t color)
  */
 void gfx_draw_img (gfx_image_t* img, gfx_coord_t* coord)
 {
+    /*
 	switch (img->pixel_format)
 	{
 		case GFX_PIXEL_FORMAT_RGB565:
@@ -664,6 +693,7 @@ void gfx_draw_img (gfx_image_t* img, gfx_coord_t* coord)
 		default:
 			break;
 	}
+    */
 }
 
 /*
@@ -675,6 +705,7 @@ void gfx_draw_img (gfx_image_t* img, gfx_coord_t* coord)
  */
 bool gfx_load_img (const char* file_name, gfx_image_t* img)
 {
+    /*
 	FIL file;
 	FRESULT fres;
 	uint32_t file_size;
@@ -774,6 +805,8 @@ bool gfx_load_img (const char* file_name, gfx_image_t* img)
 	}
 
 	return true;
+    */
+        return true;
 }
 
 /*
@@ -783,8 +816,8 @@ bool gfx_load_img (const char* file_name, gfx_image_t* img)
  */
 void gfx_unload_img (gfx_image_t* img)
 {
-	free (img->pixel_data);
-	img->pixel_data = NULL;
+	//free (img->pixel_data);
+	//img->pixel_data = NULL;
 }
 
 /*
@@ -800,6 +833,7 @@ void gfx_unload_img (gfx_image_t* img)
  */
 uint8_t gfx_draw_character (char chr, gfx_image_t* img, uint16_t x0, uint16_t y0, const gfx_font_t* font, uint32_t color)
 {
+    /*
 	uint16_t x, y;
 	uint8_t cols;
 	uint8_t rows;
@@ -819,13 +853,13 @@ uint8_t gfx_draw_character (char chr, gfx_image_t* img, uint16_t x0, uint16_t y0
 
 	if (font->bitmap_font)
 	{
-		/* get the font dimensions */
+		//get the font dimensions
 		cols = font->char_width;
 		rows = font->char_height;
 
 		for (y = 0; y < rows; y++)
 		{
-			/* get pixel row */
+			//get pixel row
 			pixel_row = font->chars[rows * (chr - 32) + y];
 			mask = 0x80;
 
@@ -833,7 +867,7 @@ uint8_t gfx_draw_character (char chr, gfx_image_t* img, uint16_t x0, uint16_t y0
 			{
 				if ((pixel_row & mask) != 0)
 				{
-					/* character pixel */
+					//character pixel
 					gfx_draw_pixel (img, x0 + y * img->width + x, y0, color);
 				}
 
@@ -885,6 +919,8 @@ uint8_t gfx_draw_character (char chr, gfx_image_t* img, uint16_t x0, uint16_t y0
 	}
 
 	return cols;
+    */
+        return 0;
 }
 
 /*
@@ -898,12 +934,13 @@ uint8_t gfx_draw_character (char chr, gfx_image_t* img, uint16_t x0, uint16_t y0
  */
 void gfx_draw_character_centered (const char chr, gfx_image_t* img, const gfx_font_t* font, gfx_coord_t* coords, uint32_t color)
 {
-	uint16_t char_width;
+	/*uint16_t char_width;
 	uint16_t char_height;
 
 	gfx_get_char_dimensions(chr, font, &char_width, &char_height);
 
 	gfx_draw_character (chr, img, coords->dest_x + ((coords->source_w - char_width) / 2), coords->dest_y, font, color);
+    */
 }
 
 /*
@@ -919,7 +956,8 @@ void gfx_draw_character_centered (const char chr, gfx_image_t* img, const gfx_fo
  */
 void gfx_draw_string (const char* str, const gfx_font_t* font, gfx_image_t* img, uint16_t x, uint16_t y, uint16_t max_width, uint32_t color)
 {
-	uint16_t str_index;
+	/*
+    uint16_t str_index;
 	uint16_t char_width;
 	uint16_t char_height;
 	uint16_t cur_x;
@@ -931,12 +969,12 @@ void gfx_draw_string (const char* str, const gfx_font_t* font, gfx_image_t* img,
 
 	while (str[str_index] != '\0')
 	{
-		/* get word dimensions and length */
+		//get word dimensions and length
 		gfx_get_char_dimensions (str[str_index], font, &char_width, &char_height);
 
 		if ((cur_x + char_width > img->width) || ((max_width != 0) && (cur_x + char_width > max_width)))
 		{
-			/* char does not fit in line, start new line */
+			//char does not fit in line, start new line
 			cur_x = x;
 			cur_y += font->char_height + font->line_space;
 		}
@@ -948,7 +986,7 @@ void gfx_draw_string (const char* str, const gfx_font_t* font, gfx_image_t* img,
 		}
 		else if (str[str_index] == '\r')
 		{
-			/* ignore */
+			//ignore
 		}
 		else
 		{
@@ -963,6 +1001,7 @@ void gfx_draw_string (const char* str, const gfx_font_t* font, gfx_image_t* img,
 
 		str_index++;
 	}
+    */
 }
 
 /*
@@ -978,7 +1017,7 @@ void gfx_draw_string (const char* str, const gfx_font_t* font, gfx_image_t* img,
  */
 void gfx_draw_string_wrapped (const char* str, const gfx_font_t* font, gfx_image_t* img, uint16_t x, uint16_t y, uint16_t max_width, uint32_t color)
 {
-	uint16_t str_index;
+	/*uint16_t str_index;
 	uint16_t word_length;
 	uint16_t word_width;
 	uint16_t word_height;
@@ -994,19 +1033,19 @@ void gfx_draw_string_wrapped (const char* str, const gfx_font_t* font, gfx_image
 	{
 		if (str[str_index] == '\n')
 		{
-			/* new line */
+			//new line
 			cur_x = x;
 			cur_y += font->char_height + font->line_space;
 			str_index++;
 			continue;
 		}
 
-		/* get word dimensions and length */
+		//get word dimensions and length
 		word_length = gfx_measure_string (&str[str_index], font, true, &word_width, &word_height);
 
 		if ((cur_x + word_width > img->width) || ((max_width != 0) && (cur_x + word_width > max_width)))
 		{
-			/* word does not fit in line, start new line */
+			//word does not fit in line, start new line
 			cur_x = x;
 			cur_y += font->char_height + font->line_space;
 		}
@@ -1030,6 +1069,7 @@ void gfx_draw_string_wrapped (const char* str, const gfx_font_t* font, gfx_image
 			str_index++;
 		}
 	}
+    */
 }
 
 /*
@@ -1043,11 +1083,11 @@ void gfx_draw_string_wrapped (const char* str, const gfx_font_t* font, gfx_image
  */
 void gfx_draw_string_centered (const char* str, const gfx_font_t* font, gfx_image_t* img, uint16_t y, uint32_t color)
 {
-	uint16_t str_width;
-	uint16_t str_height;
+	//uint16_t str_width;
+	//uint16_t str_height;
 
-	gfx_measure_string (str, font, false, &str_width, &str_height);
-	gfx_draw_string_wrapped (str, font, img, (img->width - str_width) / 2, y, 0, color);
+	//gfx_measure_string (str, font, false, &str_width, &str_height);
+	//gfx_draw_string_wrapped (str, font, img, (img->width - str_width) / 2, y, 0, color);
 }
 
 #if 1
@@ -1061,6 +1101,7 @@ void gfx_draw_string_centered (const char* str, const gfx_font_t* font, gfx_imag
  */
 void gfx_rotate (gfx_image_t* src, gfx_image_t* dst, float radians, uint32_t back_color)
 {
+    /*
 	int16_t x;
 	int16_t y;
 	int16_t src_x;
@@ -1108,6 +1149,7 @@ void gfx_rotate (gfx_image_t* src, gfx_image_t* dst, float radians, uint32_t bac
 			}
 		}
 	}
+    */
 }
 #else
 /*
@@ -1178,6 +1220,7 @@ void gfx_rotate (gfx_image_t* src, gfx_image_t* dst, float radians, uint32_t bac
  */
 void gfx_flip90 (gfx_obj_t* obj)
 {
+    /*
 	uint32_t* tmp;
 	uint16_t size_tmp;
 	uint16_t x;
@@ -1213,6 +1256,7 @@ void gfx_flip90 (gfx_obj_t* obj)
 
 	obj->coords.source_w = img_src->width;
 	obj->coords.source_h = img_src->height;
+    */
 }
 
 /*
@@ -1224,6 +1268,7 @@ void gfx_flip90 (gfx_obj_t* obj)
  */
 void gfx_copy_image (gfx_image_t* source, gfx_image_t* dest)
 {
+    /*
 	uint32_t size;
 
 	size = source->width * source->height * gfx_bytes_per_pixel (source);
@@ -1239,6 +1284,7 @@ void gfx_copy_image (gfx_image_t* source, gfx_image_t* dest)
 	dest->width = source->width;
 	dest->height = source->height;
 	dest->pixel_format = source->pixel_format;
+    */
 }
 
 /*
@@ -1251,7 +1297,7 @@ void gfx_copy_image (gfx_image_t* source, gfx_image_t* dest)
  */
 void gfx_set_pixel (gfx_image_t* img, uint16_t x, uint16_t y, uint32_t color)
 {
-	gfx_draw_pixel (img, x, y, color);
+	//gfx_draw_pixel (img, x, y, color);
 }
 
 /*
@@ -1264,6 +1310,7 @@ void gfx_set_pixel (gfx_image_t* img, uint16_t x, uint16_t y, uint32_t color)
  */
 uint32_t gfx_get_pixel (gfx_image_t* img, uint16_t x, uint16_t y)
 {
+    /*
 	uint32_t color;
 
 	switch (img->pixel_format)
@@ -1281,6 +1328,8 @@ uint32_t gfx_get_pixel (gfx_image_t* img, uint16_t x, uint16_t y)
 	}
 
 	return color;
+    */
+    return 0;
 }
 
 /*
@@ -1295,7 +1344,8 @@ uint32_t gfx_get_pixel (gfx_image_t* img, uint16_t x, uint16_t y)
  */
 void gfx_draw_line (gfx_image_t* img, uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint32_t color)
 {
-	uint16_t i;
+	/*
+    uint16_t i;
     uint16_t dx,    dy;
     uint16_t dxabs, dyabs;
     uint16_t sdx,   sdy;
@@ -1304,7 +1354,7 @@ void gfx_draw_line (gfx_image_t* img, uint16_t x1, uint16_t y1, uint16_t x2, uin
 
     if (y1 > y2)
 	{
-		/* we assume y2 > y1 and invert if not */
+		//we assume y2 > y1 and invert if not
 		i = y2;
 		y2 = y1;
 		y1 = i;
@@ -1312,28 +1362,28 @@ void gfx_draw_line (gfx_image_t* img, uint16_t x1, uint16_t y1, uint16_t x2, uin
 
     if (x1 > x2)
     {
-    	/* we assume x2 > x1 and we swap them if not */
+    	//we assume x2 > x1 and we swap them if not
         i = x2;
         x2 = x1;
         x1 = i;
     }
 
-    /* the horizontal distance of the line */
+    //the horizontal distance of the line
     dx = x2 - x1;
 
     if (dx == 0)
     {
-    	/* vertical line */
+    	//vertical line
         gfx_fill_rect (img, x1, y1, 1, y2 - y1 + 1, color);
         return;
     }
 
-    /* the vertical distance of the line */
+    //the vertical distance of the line
     dy = y2 - y1;
 
     if (dy == 0)
     {
-    	/* horizontal line */
+    	//horizontal line
         gfx_fill_rect (img, x1, y1, x2 - x1 + 1, 1, color);
         return;
     }
@@ -1347,12 +1397,12 @@ void gfx_draw_line (gfx_image_t* img, uint16_t x1, uint16_t y1, uint16_t x2, uin
     px = x1;
     py = y1;
 
-    /* start pixel */
+    //start pixel
     gfx_draw_pixel (img, x1, y1, color);
 
     if (dxabs >= dyabs)
     {
-    	/* the line is more horizontal than vertical */
+    	//the line is more horizontal than vertical
         for (i = 0; i < dxabs; i++)
         {
             y += dyabs;
@@ -1370,7 +1420,7 @@ void gfx_draw_line (gfx_image_t* img, uint16_t x1, uint16_t y1, uint16_t x2, uin
     }
     else
     {
-    	/* the line is more vertical than horizontal */
+    	//the line is more vertical than horizontal
         for (i = 0; i < dyabs; i++)
         {
             x += dxabs;
@@ -1386,6 +1436,7 @@ void gfx_draw_line (gfx_image_t* img, uint16_t x1, uint16_t y1, uint16_t x2, uin
             gfx_draw_pixel (img, px, py, color);
         }
     }
+    */
 }
 
 /*
@@ -1400,6 +1451,7 @@ void gfx_draw_line (gfx_image_t* img, uint16_t x1, uint16_t y1, uint16_t x2, uin
  */
 void gfx_fill_rect (gfx_image_t* img, uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint32_t color)
 {
+    /*
 	DMA2D_InitTypeDef DMA2D_InitStruct;
 	uint8_t r;
 	uint8_t g;
@@ -1453,6 +1505,7 @@ void gfx_fill_rect (gfx_image_t* img, uint16_t x, uint16_t y, uint16_t width, ui
 	DMA2D_StartTransfer ();
 
 	while (DMA2D_GetFlagStatus (DMA2D_FLAG_TC) == RESET);
+    */
 }
 
 /*
@@ -1464,6 +1517,7 @@ void gfx_fill_rect (gfx_image_t* img, uint16_t x, uint16_t y, uint16_t width, ui
  */
 void gfx_draw_img_on_img (gfx_image_t* img_src, gfx_image_t* img_dst, gfx_coord_t* coord)
 {
+    /*
 	DMA2D_InitTypeDef DMA2D_InitStruct;
 	DMA2D_FG_InitTypeDef DMA2D_FG_InitStruct;
 	DMA2D_BG_InitTypeDef DMA2D_BG_InitStruct;
@@ -1530,6 +1584,7 @@ void gfx_draw_img_on_img (gfx_image_t* img_src, gfx_image_t* img_dst, gfx_coord_
 	DMA2D_StartTransfer ();
 
 	while (DMA2D_GetFlagStatus (DMA2D_FLAG_TC) == RESET);
+    */
 }
 
 /*
@@ -1540,7 +1595,7 @@ void gfx_draw_img_on_img (gfx_image_t* img_src, gfx_image_t* img_dst, gfx_coord_
  */
 void gfx_fill_img (gfx_image_t* img, uint32_t color)
 {
-	gfx_fill_rect (img, 0, 0, img->width, img->height, color);
+	//gfx_fill_rect (img, 0, 0, img->width, img->height, color);
 }
 
 /*
@@ -1554,12 +1609,14 @@ void gfx_fill_img (gfx_image_t* img, uint32_t color)
  */
 void gfx_init_img (gfx_image_t* img, uint16_t width, uint16_t height, gfx_pixel_format_t pixel_format, uint32_t color)
 {
+    /*
 	img->width = width;
 	img->height = height;
 	img->pixel_format = pixel_format;
 	img->pixel_data = malloc (width * height * gfx_bytes_per_pixel (img));
 
 	gfx_fill_img (img, color);
+    */
 }
 
 /*
@@ -1570,6 +1627,7 @@ void gfx_init_img (gfx_image_t* img, uint16_t width, uint16_t height, gfx_pixel_
  */
 void gfx_init_img_obj (gfx_obj_t* obj, gfx_image_t* img)
 {
+    /*
 	obj->coords.dest_x = 0;
 	obj->coords.dest_y = 0;
 	obj->coords.source_w = img->width;
@@ -1579,6 +1637,7 @@ void gfx_init_img_obj (gfx_obj_t* obj, gfx_image_t* img)
 	obj->obj_type = GFX_OBJ_IMG;
 	obj->data = img;
 	obj->enabled = true;
+    */
 }
 
 /*
@@ -1589,12 +1648,14 @@ void gfx_init_img_obj (gfx_obj_t* obj, gfx_image_t* img)
  */
 void gfx_init_img_coord (gfx_coord_t* coord, gfx_image_t* img)
 {
+    /*
 	coord->dest_x = 0;
 	coord->dest_y = 0;
 	coord->source_w = img->width;
 	coord->source_h = img->height;
 	coord->source_x = 0;
 	coord->source_y = 0;
+    */
 }
 
 /*---------------------------------------------------------------------*

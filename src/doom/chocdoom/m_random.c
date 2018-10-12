@@ -21,6 +21,7 @@
 #endif
 
 #include "m_random.h"
+#include "api.h"
 
 #include "main.h"
 
@@ -75,7 +76,7 @@ void M_ClearRandom (void)
 #if ORIGCODE
     rndindex = time(NULL) & 0xff;
 #else
-	rndindex = systime & 0xff;
+	rndindex = millis() & 0xff;
 #endif
 }
 

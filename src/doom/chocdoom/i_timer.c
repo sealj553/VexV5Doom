@@ -16,12 +16,10 @@
 //      Timer functions.
 //
 
-#ifdef ORIGCODE
-#include "SDL.h"
-#endif
-
 #include "i_timer.h"
 #include "doomtype.h"
+
+#include "api.h"
 
 #include "main.h"
 
@@ -95,9 +93,7 @@ static uint32_t basetime = 0;
 
 int  I_GetTime (void)
 {
-    uint32_t ticks;
-
-    ticks = systime;
+    uint32_t ticks = millis();
 
     if (basetime == 0)
         basetime = ticks;
@@ -113,9 +109,7 @@ int  I_GetTime (void)
 
 int I_GetTimeMS(void)
 {
-    uint32_t ticks;
-
-    ticks = systime;
+    uint32_t ticks = millis();;
 
     if (basetime == 0)
         basetime = ticks;
@@ -127,7 +121,7 @@ int I_GetTimeMS(void)
 
 void I_Sleep(int ms)
 {
-	sleep_ms (ms);
+	task_delay(ms);
 }
 
 void I_WaitVBL(int count)

@@ -1526,16 +1526,19 @@ void G_DoLoadGame (void)
 	 
     gameaction = ga_nothing; 
 	 
-    if (fopen (&save_stream, savename) == NULL)
+
+    save_stream = fopen(savename, "rb");
+
+    if (save_stream == NULL)
     {
-    	return;
+        return;
     }
 
     savegame_error = false;
 
     if (!P_ReadSaveGameHeader())
     {
-        fclose (&save_stream);
+        fclose(save_stream);
         return;
     }
 
@@ -1555,7 +1558,7 @@ void G_DoLoadGame (void)
     if (!P_ReadSaveGameEOF())
 	I_Error ("Bad savegame");
 
-    fclose (&save_stream);
+    fclose(save_stream);
     
     if (setsizeneeded)
     	R_ExecuteSetViewSize ();
@@ -1584,7 +1587,6 @@ void G_DoSaveGame (void)
 { 
     char *savegame_file;
     char *temp_savegame_file;
-    FRESULT res;
 
     temp_savegame_file = strupr (P_TempSaveGameFile());
     savegame_file = strupr (P_SaveGameFile(savegameslot));
@@ -1593,8 +1595,9 @@ void G_DoSaveGame (void)
     // and then rename it at the end if it was successfully written.
     // This prevents an existing savegame from being overwritten by 
     // a corrupted one, or if a savegame buffer overrun occurs.
+    save_stream = fopen(temp_savegame_file, "wb");
 
-    if (fopen (&save_stream, temp_savegame_file) != FR_OK)
+    if (save_stream == NULL)
     {
     	I_Error ("open err %s\n", temp_savegame_file);
     }
@@ -1613,24 +1616,24 @@ void G_DoSaveGame (void)
     // Enforce the same savegame size limit as in Vanilla Doom, 
     // except if the vanilla_savegame_limit setting is turned off.
 
-    if (vanilla_savegame_limit && f_tell (&save_stream) > SAVEGAMESIZE)
+    if (vanilla_savegame_limit && ftell(save_stream) > SAVEGAMESIZE)
     {
-        I_Error ("Savegame buffer overrun");
+        I_Error("Savegame buffer overrun");
     }
     
     // Finish up, close the savegame file.
 
-    f_close (&save_stream);
+    fclose(save_stream);
 
     // Now rename the temporary savegame file to the actual savegame
     // file, overwriting the old savegame if there was one there.
 
-    if (M_FileExists (savegame_file))
+    /*if (M_FileExists (savegame_file))
     {
     	f_unlink (savegame_file);
     }
 
-    res = f_rename (temp_savegame_file, savegame_file);
+    //res = f_rename (temp_savegame_file, savegame_file);
 
     if (res != FR_OK)
     {
@@ -1644,6 +1647,18 @@ void G_DoSaveGame (void)
 
     // draw the pattern into the back screen
     R_FillBackScreen ();	
+    */
+
+    remove(savegame_file);
+    rename(temp_savegame_file, savegame_file);
+
+    gameaction = ga_nothing;
+    M_StringCopy(savedescription, "", sizeof(savedescription));
+
+    players[consoleplayer].message = DEH_String(GGSAVED);
+
+    // draw the pattern into the back screen
+    R_FillBackScreen ();
 } 
  
 

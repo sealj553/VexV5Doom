@@ -53,7 +53,7 @@ void P_UnArchiveThinkers (void);
 void P_ArchiveSpecials (void);
 void P_UnArchiveSpecials (void);
 
-extern FILE save_stream;
+extern FILE *save_stream;
 extern boolean savegame_error;
 
 

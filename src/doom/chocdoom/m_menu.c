@@ -502,38 +502,24 @@ menu_t  SaveDef =
 //
 void M_ReadSaveStrings(void)
 {
-#if ORIGCODE
     FILE   *handle;
-#else
-    FIL		handle;
-    unsigned long count;
-#endif
     int     i;
     char    name[256];
 
     for (i = 0;i < load_end;i++)
     {
         M_StringCopy(name, P_SaveGameFile(i), sizeof(name));
-#if ORIGCODE
         handle = fopen(name, "rb");
 
         if (handle == NULL)
-#else
-        if (f_open (&handle, name, FA_OPEN_EXISTING | FA_READ) != FR_OK)
-#endif
         {
             M_StringCopy(savegamestrings[i], EMPTYSTRING, SAVESTRINGSIZE);
             LoadMenu[i].status = 0;
             continue;
         }
 
-#if ORIGCODE
 		fread(&savegamestrings[i], 1, SAVESTRINGSIZE, handle);
 		fclose(handle);
-#else
-		f_read (&handle, &savegamestrings[i], SAVESTRINGSIZE, &count);
-		f_close (&handle);
-#endif
 		LoadMenu[i].status = 1;
     }
 }
