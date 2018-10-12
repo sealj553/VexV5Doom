@@ -71,7 +71,8 @@ clean:
 
 $(OUTBIN): $(OUTELF) $(BINDIR)
 	@echo -n "Creating $@ for $(DEVICE) "
-	$(call test_output,$D$(OBJCOPY) $< -O binary $@,$(DONE_STRING))
+	//$(call test_output,$D$(OBJCOPY) $< -O binary $@,$(DONE_STRING))
+	$D$(OBJCOPY) $< -O binary $@
 
 $(OUTELF): $(call GETALLOBJ,$(EXCLUDE_SRCDIRS))
 	$(call _pros_ld_timestamp)

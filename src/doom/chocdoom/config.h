@@ -70,13 +70,13 @@
 #undef PACKAGE_BUGREPORT
 
 /* Define to the full name of this package. */
-#define PACKAGE_NAME "STM32Doom"
+#define PACKAGE_NAME "VexV5Doom"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "STM32Doom 0.1"
+#define PACKAGE_STRING "VexV5Doom 0.01-beta"
 
 /* Define to the one symbol short name of this package. */
-#define PACKAGE_TARNAME "stm32doom.tar"
+#define PACKAGE_TARNAME "vexv5doom.tar"
 
 /* Define to the home page for this package. */
 #define PACKAGE_URL ""
@@ -85,7 +85,7 @@
 #define PACKAGE_VERSION 0.1
 
 /* Change this when you create your awesome forked version */
-#define PROGRAM_PREFIX "stm32doom"
+#define PROGRAM_PREFIX "vexv5doom"
 
 /* Define to 1 if you have the ANSI C header files. */
 #define STDC_HEADERS 1
@@ -97,4 +97,5 @@
 #undef ORIGCODE
 
 /* Define to the directory where all game files are located */
-#define FILES_DIR "0:/doom"
+//#define FILES_DIR "0:/doom"
+#define FILES_DIR ""
