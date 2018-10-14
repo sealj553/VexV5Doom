@@ -18,5 +18,6 @@ extern void D_DoomMain(void);
 
 void opcontrol() {
     printf("Starting DOOM\n");
+    task_set_priority(CURRENT_TASK, TASK_PRIORITY_MAX);
     D_DoomMain();
 }
