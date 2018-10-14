@@ -41,7 +41,11 @@ static const char rcsid[] = "$Id: i_x.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 #include "pros/apix.h"
 #include "api.h"
 
+extern int key_nextweapon;
+extern int key_prevweapon;
+
 void update_controller(void);
+void check_button(int prev, int curr, int action);
 
 struct controller_state {
     int32_t
@@ -127,11 +131,11 @@ void update_controller(void){
     c_state.a_lx  = controller_get_analog(E_CONTROLLER_MASTER,  E_CONTROLLER_ANALOG_LEFT_X);
     c_state.a_ly  = controller_get_analog(E_CONTROLLER_MASTER,  E_CONTROLLER_ANALOG_LEFT_Y);
     c_state.a_rx  = controller_get_analog(E_CONTROLLER_MASTER,  E_CONTROLLER_ANALOG_RIGHT_X);
-    //c_state.a_ry  = controller_get_analog(E_CONTROLLER_MASTER,  E_CONTROLLER_ANALOG_RIGHT_Y);
-    //c_state.d_l1  = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_L1);
-    //c_state.d_l2  = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_L2);
-    //c_state.d_r1  = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_R1);
-    //c_state.d_r2  = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_R2);
+    c_state.a_ry  = controller_get_analog(E_CONTROLLER_MASTER,  E_CONTROLLER_ANALOG_RIGHT_Y);
+    c_state.d_l1  = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_L1);
+    c_state.d_l2  = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_L2);
+    c_state.d_r1  = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_R1);
+    c_state.d_r2  = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_R2);
     c_state.d_up  = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_UP);
     c_state.d_dwn = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_DOWN);
     c_state.d_lft = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_LEFT);
@@ -187,115 +191,11 @@ void I_GetEvent (void)
     check_button(c_oldstate.d_lft, c_state.d_lft, KEY_LEFTARROW);
     check_button(c_oldstate.d_rig, c_state.d_rig, KEY_RIGHTARROW);
 
+    //l1 = prev weapon
+    check_button(c_oldstate.d_l1, c_state.d_l1, key_prevweapon);
 
-
-    //bool button_state;
-    //button_state = button_read ();
-    //if (last_button_state != button_state)
-    //{
-    //	last_button_state = button_state;
-    //	event.type = last_button_state ? ev_keydown : ev_keyup;
-    //	event.data1 = KEY_FIRE;
-    //	event.data2 = -1;
-    //	event.data3 = -1;
-    //	D_PostEvent (&event);
-    //}
-
-    //touch_main ();
-
-    /*if ((touch_state.x != last_touch_state.x) || (touch_state.y != last_touch_state.y) || (touch_state.status != last_touch_state.status)) {
-      last_touch_state = touch_state;
-
-      event.type = (touch_state.status == TOUCH_PRESSED) ? ev_keydown : ev_keyup;
-      event.data1 = -1;
-      event.data2 = -1;
-      event.data3 = -1;
-
-      if ((touch_state.x > 49)
-      && (touch_state.x < 72)
-      && (touch_state.y > 104)
-      && (touch_state.y < 143)) {
-    // select weapon
-    if (touch_state.x < 60) {
-    // lower row (5-7)
-    if (touch_state.y < 119) {
-    event.data1 = '5';
-    } else if (touch_state.y < 131) {
-    event.data1 = '6';
-    } else {
-    event.data1 = '1';
-    }
-    } else {
-    // upper row (2-4)
-    if (touch_state.y < 119) {
-    event.data1 = '2';
-    } else if (touch_state.y < 131) {
-    event.data1 = '3';
-    } else {
-    event.data1 = '4';
-    }
-    }
-    } else if (touch_state.x < 40) {
-    // button bar at bottom screen
-    if (touch_state.y < 40) {
-    // enter
-    event.data1 = KEY_ENTER;
-    } else if (touch_state.y < 80) {
-    // escape
-    event.data1 = KEY_ESCAPE;
-    } else if (touch_state.y < 120) {
-    // use
-    event.data1 = KEY_USE;
-    } else if (touch_state.y < 160) {
-    // map
-    event.data1 = KEY_TAB;
-    } else if (touch_state.y < 200) {
-    // pause
-    event.data1 = KEY_PAUSE;
-    } else if (touch_state.y < 240) {
-    // toggle run
-    if (touch_state.status == TOUCH_PRESSED) {
-    run = !run;
-    event.data1 = KEY_RSHIFT;
-
-    if (run) {
-    event.type = ev_keydown;
-    } else {
-    event.type = ev_keyup;
-    }
-    } else {
-    return;
-    }
-    } else if (touch_state.y < 280) {
-    // save
-    event.data1 = KEY_F2;
-    } else if (touch_state.y < 320) {
-    // load
-    event.data1 = KEY_F3;
-    }
-    } else {
-    // movement/menu navigation
-    if (touch_state.x < 100) {
-        if (touch_state.y < 100) {
-            event.data1 = KEY_STRAFE_L;
-        } else if (touch_state.y < 220) {
-            event.data1 = KEY_DOWNARROW;
-        } else {
-            event.data1 = KEY_STRAFE_R;
-        }
-    } else if (touch_state.x < 180) {
-        if (touch_state.y < 160) {
-            event.data1 = KEY_LEFTARROW;
-        } else {
-            event.data1 = KEY_RIGHTARROW;
-        }
-    } else {
-        event.data1 = KEY_UPARROW;
-    }
-}
-D_PostEvent (&event);
-}
-*/
+    //r1 = next weapon
+    check_button(c_oldstate.d_r1, c_state.d_r1, key_nextweapon);
 }
 
 void I_StartTic (void) {
