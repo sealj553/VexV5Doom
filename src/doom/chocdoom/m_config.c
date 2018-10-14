@@ -2042,32 +2042,7 @@ float M_GetFloatVariable(char *name)
 
 static char *GetDefaultConfigDir(void)
 {
-#if !defined(_WIN32) || defined(_WIN32_WCE)
-
-    // Configuration settings are stored in ~/.chocolate-doom/,
-    // except on Windows, where we behave like Vanilla Doom and
-    // save in the current directory.
-
-    char *homedir;
-    char *result;
-
-    homedir = getenv("HOME");
-
-    if (homedir != NULL)
-    {
-        // put all configuration in a config directory off the
-        // homedir
-
-        result = M_StringJoin(homedir, DIR_SEPARATOR_S,
-                              "." PACKAGE_TARNAME, DIR_SEPARATOR_S, NULL);
-
-        return result;
-    }
-    else
-#endif /* #ifndef _WIN32 */
-    {
-        return strdup(FILES_DIR"/");
-    }
+    return strdup(FILES_DIR"/");
 }
 
 // 

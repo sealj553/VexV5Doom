@@ -22,8 +22,7 @@
 //
 //-----------------------------------------------------------------------------
 
-static const char
-rcsid[] = "$Id: i_x.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
+static const char rcsid[] = "$Id: i_x.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 
 #include "config.h"
 #include "v_video.h"
@@ -38,11 +37,9 @@ rcsid[] = "$Id: i_x.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 
 #include <stdint.h>
 #include <stdbool.h>
-//#include "lcd.h"
+
+#include "pros/apix.h"
 #include "gfx.h"
-//#include "images.h"
-//#include "touch.h"
-//#include "button.h"
 
 // The screen buffer; this is modified to draw things to the screen
 
@@ -89,37 +86,14 @@ typedef struct
 	byte b;
 } col_t;
 
-// Palette converted to RGB565
-
-static uint16_t rgb565_palette[256];
-
-// Last touch state
-
-//static touch_state_t last_touch_state;
-
-// Last button state
-
-//static bool last_button_state;
+// Palette converted to RGB888
+static uint16_t rgb888_palette[256];
 
 // run state
-
 static bool run;
 
 void I_InitGraphics (void)
 {
-	//gfx_image_t keys_img;
-	//gfx_coord_t coords;
-
-	//gfx_init_img (&keys_img, 40, 320, GFX_PIXEL_FORMAT_RGB565, RGB565_BLACK);
-	//keys_img.pixel_data = (uint8_t*)img_keys;
-	//gfx_init_img_coord (&coords, &keys_img);
-
-	//gfx_draw_img (&keys_img, &coords);
-	//lcd_refresh ();
-
-	//gfx_draw_img (&keys_img, &coords);
-	//lcd_refresh ();
-
 	I_VideoBuffer = (byte*)Z_Malloc (SCREENWIDTH * SCREENHEIGHT, PU_STATIC, NULL);
 
 	screenvisible = true;
@@ -157,8 +131,7 @@ void I_GetEvent (void)
 
 	//touch_main ();
 
-	/*if ((touch_state.x != last_touch_state.x) || (touch_state.y != last_touch_state.y) || (touch_state.status != last_touch_state.status))
-	{
+	/*if ((touch_state.x != last_touch_state.x) || (touch_state.y != last_touch_state.y) || (touch_state.status != last_touch_state.status)) {
 		last_touch_state = touch_state;
 
 		event.type = (touch_state.status == TOUCH_PRESSED) ? ev_keydown : ev_keyup;
@@ -169,167 +142,106 @@ void I_GetEvent (void)
 		if ((touch_state.x > 49)
 		 && (touch_state.x < 72)
 		 && (touch_state.y > 104)
-		 && (touch_state.y < 143))
-		{
+		 && (touch_state.y < 143)) {
 			// select weapon
-			if (touch_state.x < 60)
-			{
+			if (touch_state.x < 60) {
 				// lower row (5-7)
-				if (touch_state.y < 119)
-				{
+				if (touch_state.y < 119) {
 					event.data1 = '5';
-				}
-				else if (touch_state.y < 131)
-				{
+				} else if (touch_state.y < 131) {
 					event.data1 = '6';
-				}
-				else
-				{
+				} else {
 					event.data1 = '1';
 				}
-			}
-			else
-			{
+			} else {
 				// upper row (2-4)
-				if (touch_state.y < 119)
-				{
+				if (touch_state.y < 119) {
 					event.data1 = '2';
-				}
-				else if (touch_state.y < 131)
-				{
+				} else if (touch_state.y < 131) {
 					event.data1 = '3';
-				}
-				else
-				{
+				} else {
 					event.data1 = '4';
 				}
 			}
-		}
-		else if (touch_state.x < 40)
-		{
+		} else if (touch_state.x < 40) {
 			// button bar at bottom screen
-			if (touch_state.y < 40)
-			{
+			if (touch_state.y < 40) {
 				// enter
 				event.data1 = KEY_ENTER;
-			}
-			else if (touch_state.y < 80)
-			{
+			} else if (touch_state.y < 80) {
 				// escape
 				event.data1 = KEY_ESCAPE;
-			}
-			else if (touch_state.y < 120)
-			{
+			} else if (touch_state.y < 120) {
 				// use
 				event.data1 = KEY_USE;
-			}
-			else if (touch_state.y < 160)
-			{
+			} else if (touch_state.y < 160) {
 				// map
 				event.data1 = KEY_TAB;
-			}
-			else if (touch_state.y < 200)
-			{
+			} else if (touch_state.y < 200) {
 				// pause
 				event.data1 = KEY_PAUSE;
-			}
-			else if (touch_state.y < 240)
-			{
+			} else if (touch_state.y < 240) {
 				// toggle run
-				if (touch_state.status == TOUCH_PRESSED)
-				{
+				if (touch_state.status == TOUCH_PRESSED) {
 					run = !run;
-
 					event.data1 = KEY_RSHIFT;
 
-					if (run)
-					{
+					if (run) {
 						event.type = ev_keydown;
-					}
-					else
-					{
+					} else {
 						event.type = ev_keyup;
 					}
-				}
-				else
-				{
+				} else {
 					return;
 				}
-			}
-			else if (touch_state.y < 280)
-			{
+			} else if (touch_state.y < 280) {
 				// save
 				event.data1 = KEY_F2;
-			}
-			else if (touch_state.y < 320)
-			{
+			} else if (touch_state.y < 320) {
 				// load
 				event.data1 = KEY_F3;
 			}
-		}
-		else
-		{
+		} else {
 			// movement/menu navigation
-			if (touch_state.x < 100)
-			{
-				if (touch_state.y < 100)
-				{
+			if (touch_state.x < 100) {
+				if (touch_state.y < 100) {
 					event.data1 = KEY_STRAFE_L;
-				}
-				else if (touch_state.y < 220)
-				{
+				} else if (touch_state.y < 220) {
 					event.data1 = KEY_DOWNARROW;
-				}
-				else
-				{
+				} else {
 					event.data1 = KEY_STRAFE_R;
 				}
-			}
-			else if (touch_state.x < 180)
-			{
-				if (touch_state.y < 160)
-				{
+			} else if (touch_state.x < 180) {
+				if (touch_state.y < 160) {
 					event.data1 = KEY_LEFTARROW;
-				}
-				else
-				{
+				} else {
 					event.data1 = KEY_RIGHTARROW;
 				}
-			}
-			else
-			{
+			} else {
 				event.data1 = KEY_UPARROW;
 			}
 		}
-
 		D_PostEvent (&event);
 	}
 */
 }
 
-void I_StartTic (void)
-{
+void I_StartTic (void) {
 	I_GetEvent();
 }
 
-void I_UpdateNoBlit (void)
-{
-}
+void I_UpdateNoBlit(void){}
 
-void I_FinishUpdate (void)
-{
-	int x, y;
-	byte index;
+void I_FinishUpdate(void){
+    lv_vdb_t *framebuffer = lv_vdb_get();
 
 	//lcd_vsync = false;
 
-	for (y = 0; y < SCREENHEIGHT; y++)
-	{
-		for (x = 0; x < SCREENWIDTH; x++)
-		{
-			index = I_VideoBuffer[y * SCREENWIDTH + x];
+	for (int y = 0; y < SCREENHEIGHT; ++y) {
+		for (int x = 0; x < SCREENWIDTH; ++x) {
+			byte index = I_VideoBuffer[y * SCREENWIDTH + x];
 
-			//((uint16_t*)lcd_frame_buffer)[x * GFX_MAX_WIDTH + (GFX_MAX_WIDTH - y - 1)] = rgb565_palette[index];
+			//((uint16_t*)lcd_frame_buffer)[x * GFX_MAX_WIDTH + (GFX_MAX_WIDTH - y - 1)] = rgb888_palette[index];
 		}
 	}
 
@@ -349,31 +261,26 @@ void I_ReadScreen (byte* scr)
 //
 // I_SetPalette
 //
-
-//TODO: determine color pallette and implement
 void I_SetPalette (byte* palette)
 {
-	/*int i;
 	col_t* c;
 
-	for (i = 0; i < 256; i++)
-	{
+	for(int i = 0; i < 256; i++){
 		c = (col_t*)palette;
 
-		rgb565_palette[i] = GFX_RGB565(gammatable[usegamma][c->r],
+		rgb888_palette[i] = GFX_RGB888(gammatable[usegamma][c->r],
 									   gammatable[usegamma][c->g],
 									   gammatable[usegamma][c->b]);
 
 		palette += 3;
 	}
-    */
 }
 
 // Given an RGB value, find the closest matching palette index.
 
 int I_GetPaletteIndex (int r, int g, int b)
 {
-    /*int best, best_diff, diff;
+    int best, best_diff, diff;
     int i;
     col_t color;
 
@@ -382,9 +289,9 @@ int I_GetPaletteIndex (int r, int g, int b)
 
     for (i = 0; i < 256; ++i)
     {
-    	color.r = GFX_RGB565_R(rgb565_palette[i]);
-    	color.g = GFX_RGB565_G(rgb565_palette[i]);
-    	color.b = GFX_RGB565_B(rgb565_palette[i]);
+    	color.r = GFX_RGB888_R(rgb888_palette[i]);
+    	color.g = GFX_RGB888_G(rgb888_palette[i]);
+    	color.b = GFX_RGB888_B(rgb888_palette[i]);
 
         diff = (r - color.r) * (r - color.r)
              + (g - color.g) * (g - color.g)
@@ -403,8 +310,6 @@ int I_GetPaletteIndex (int r, int g, int b)
     }
 
     return best;
-    */
-    return 0;
 }
 
 void I_BeginRead (void)

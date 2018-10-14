@@ -37,9 +37,9 @@
 #include "z_zone.h"
 
 #include "config.h"
-#ifdef HAVE_LIBPNG
-#include <png.h>
-#endif
+//#ifdef HAVE_LIBPNG
+//#include <png.h>
+//#endif
 
 // TODO: There are separate RANGECHECK defines for different games, but this
 // is common code. Fix this.

@@ -1082,7 +1082,7 @@ static void D_Endoom(void)
     I_Endoom(endoom);
 }
 
-#if ORIGCODE
+#if 0
 // Load dehacked patches needed for certain IWADs.
 static void LoadIwadDeh(void)
 {
@@ -1293,31 +1293,10 @@ void D_DoomMain (void)
     if (devparm)
 	DEH_printf(D_DEVSTR);
     
-    // find which dir to use for config files
 
-#ifdef _WIN32
+    // Auto-detect the configuration dir.
 
-    //!
-    // @platform windows
-    // @vanilla
-    //
-    // Save configuration data and savegames in c:\doomdata,
-    // allowing play from CD.
-    //
-
-    if (M_ParmExists("-cdrom"))
-    {
-        printf(D_CDROM);
-
-        M_SetConfigDir("c:\\doomdata\\");
-    }
-    else
-#endif
-    {
-        // Auto-detect the configuration dir.
-
-        M_SetConfigDir(NULL);
-    }
+    M_SetConfigDir(NULL);
 
     //!
     // @arg <x>
@@ -1329,23 +1308,23 @@ void D_DoomMain (void)
 
     if ( (p=M_CheckParm ("-turbo")) )
     {
-	int     scale = 200;
-	extern int forwardmove[2];
-	extern int sidemove[2];
-	
-	if (p<myargc-1)
-	    scale = atoi (myargv[p+1]);
-	if (scale < 10)
-	    scale = 10;
-	if (scale > 400)
-	    scale = 400;
+        int     scale = 200;
+        extern int forwardmove[2];
+        extern int sidemove[2];
+
+        if (p<myargc-1)
+            scale = atoi (myargv[p+1]);
+        if (scale < 10)
+            scale = 10;
+        if (scale > 400)
+            scale = 400;
         DEH_printf("turbo scale: %i%%\n", scale);
-	forwardmove[0] = forwardmove[0]*scale/100;
-	forwardmove[1] = forwardmove[1]*scale/100;
-	sidemove[0] = sidemove[0]*scale/100;
-	sidemove[1] = sidemove[1]*scale/100;
+        forwardmove[0] = forwardmove[0]*scale/100;
+        forwardmove[1] = forwardmove[1]*scale/100;
+        sidemove[0] = sidemove[0]*scale/100;
+        sidemove[1] = sidemove[1]*scale/100;
     }
-    
+
     // init subsystems
     DEH_printf("V_Init: allocate screens.\n");
     V_Init ();
@@ -1451,7 +1430,7 @@ void D_DoomMain (void)
     modifiedgame = W_ParseCommandLine();
 
     // Debug:
-//    W_PrintDirectory();
+    //    W_PrintDirectory();
 
     //!
     // @arg <demo>
@@ -1473,7 +1452,7 @@ void D_DoomMain (void)
         // Play back the demo named demo.lmp, determining the framerate
         // of the screen.
         //
-	p = M_CheckParmWithArgs("-timedemo", 1);
+        p = M_CheckParmWithArgs("-timedemo", 1);
 
     }
 
@@ -1493,7 +1472,7 @@ void D_DoomMain (void)
         if (D_AddFile(file))
         {
             M_StringCopy(demolumpname, lumpinfo[numlumps - 1].name,
-                         sizeof(demolumpname));
+                    sizeof(demolumpname));
         }
         else
         {
@@ -1558,35 +1537,35 @@ void D_DoomMain (void)
     // Check for -file in shareware
     if (modifiedgame)
     {
-	// These are the lumps that will be checked in IWAD,
-	// if any one is not present, execution will be aborted.
-	char name[23][8]=
-	{
-	    "e2m1","e2m2","e2m3","e2m4","e2m5","e2m6","e2m7","e2m8","e2m9",
-	    "e3m1","e3m3","e3m3","e3m4","e3m5","e3m6","e3m7","e3m8","e3m9",
-	    "dphoof","bfgga0","heada1","cybra1","spida1d1"
-	};
-	int i;
-	
-	if ( gamemode == shareware)
-	    I_Error(DEH_String("\nYou cannot -file with the shareware "
-			       "version. Register!"));
+        // These are the lumps that will be checked in IWAD,
+        // if any one is not present, execution will be aborted.
+        char name[23][8]=
+        {
+            "e2m1","e2m2","e2m3","e2m4","e2m5","e2m6","e2m7","e2m8","e2m9",
+            "e3m1","e3m3","e3m3","e3m4","e3m5","e3m6","e3m7","e3m8","e3m9",
+            "dphoof","bfgga0","heada1","cybra1","spida1d1"
+        };
+        int i;
 
-	// Check for fake IWAD with right name,
-	// but w/o all the lumps of the registered version. 
-	if (gamemode == registered)
-	    for (i = 0;i < 23; i++)
-		if (W_CheckNumForName(name[i])<0)
-		    I_Error(DEH_String("\nThis is not the registered version."));
+        if ( gamemode == shareware)
+            I_Error(DEH_String("\nYou cannot -file with the shareware "
+                        "version. Register!"));
+
+        // Check for fake IWAD with right name,
+        // but w/o all the lumps of the registered version. 
+        if (gamemode == registered)
+            for (i = 0;i < 23; i++)
+                if (W_CheckNumForName(name[i])<0)
+                    I_Error(DEH_String("\nThis is not the registered version."));
     }
 
     if (W_CheckNumForName("SS_START") >= 0
-     || W_CheckNumForName("FF_END") >= 0)
+            || W_CheckNumForName("FF_END") >= 0)
     {
         I_PrintDivider();
         printf(" WARNING: The loaded WAD file contains modified sprites or\n"
-               " floor textures.  You may want to use the '-merge' command\n"
-               " line option instead of '-file'.\n");
+                " floor textures.  You may want to use the '-merge' command\n"
+                " line option instead of '-file'.\n");
     }
 
     I_PrintStartupBanner(gamedescription);
@@ -1598,9 +1577,9 @@ void D_DoomMain (void)
     if (W_CheckNumForName("FREEDOOM") >= 0 && W_CheckNumForName("FREEDM") < 0)
     {
         printf(" WARNING: You are playing using one of the Freedoom IWAD\n"
-               " files, which might not work in this port. See this page\n"
-               " for more information on how to play using Freedoom:\n"
-               "   http://www.chocolate-doom.org/wiki/index.php/Freedoom\n");
+                " files, which might not work in this port. See this page\n"
+                " for more information on how to play using Freedoom:\n"
+                "   http://www.chocolate-doom.org/wiki/index.php/Freedoom\n");
         I_PrintDivider();
     }
 
@@ -1637,8 +1616,8 @@ void D_DoomMain (void)
 
     if (p)
     {
-	startskill = myargv[p+1][0]-'1';
-	autostart = true;
+        startskill = myargv[p+1][0]-'1';
+        autostart = true;
     }
 
     //!
@@ -1652,11 +1631,11 @@ void D_DoomMain (void)
 
     if (p)
     {
-	startepisode = myargv[p+1][0]-'0';
-	startmap = 1;
-	autostart = true;
+        startepisode = myargv[p+1][0]-'0';
+        startmap = 1;
+        autostart = true;
     }
-	
+
     timelimit = 0;
 
     //! 
@@ -1671,7 +1650,7 @@ void D_DoomMain (void)
 
     if (p)
     {
-	timelimit = atoi(myargv[p+1]);
+        timelimit = atoi(myargv[p+1]);
     }
 
     //!
@@ -1685,7 +1664,7 @@ void D_DoomMain (void)
 
     if (p)
     {
-	timelimit = 20;
+        timelimit = 20;
     }
 
     //!
@@ -1743,7 +1722,7 @@ void D_DoomMain (void)
     //
 
     p = M_CheckParmWithArgs("-loadgame", 1);
-    
+
     if (p)
     {
         startloadgame = atoi(myargv[p+1]);
@@ -1802,23 +1781,23 @@ void D_DoomMain (void)
 
     if (p)
     {
-		G_RecordDemo (myargv[p+1]);
-		autostart = true;
+        G_RecordDemo (myargv[p+1]);
+        autostart = true;
     }
 
     p = M_CheckParmWithArgs("-playdemo", 1);
     if (p)
     {
-		singledemo = true;              // quit after one demo
-		G_DeferedPlayDemo (demolumpname);
-		D_DoomLoop ();  // never returns
+        singledemo = true;              // quit after one demo
+        G_DeferedPlayDemo (demolumpname);
+        D_DoomLoop ();  // never returns
     }
 
     p = M_CheckParmWithArgs("-timedemo", 1);
     if (p)
     {
-		G_TimeDemo (demolumpname);
-		D_DoomLoop ();  // never returns
+        G_TimeDemo (demolumpname);
+        D_DoomLoop ();  // never returns
     }
 
     if (startloadgame >= 0)
@@ -1829,10 +1808,10 @@ void D_DoomMain (void)
 
     if (gameaction != ga_loadgame )
     {
-		if (autostart || netgame)
-			G_InitNew (startskill, startepisode, startmap);
-		else
-			D_StartTitle ();                // start up intro loop
+        if (autostart || netgame)
+            G_InitNew (startskill, startepisode, startmap);
+        else
+            D_StartTitle ();                // start up intro loop
     }
 
     D_DoomLoop ();  // never returns

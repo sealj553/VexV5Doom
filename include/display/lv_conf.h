@@ -57,7 +57,7 @@
        automatically into RAM)*/
 
 /* Enable anti-aliasing (lines, and radiuses will be smoothed) */
-#define LV_ANTIALIAS 1 /*1: Enable anti-aliasing*/
+#define LV_ANTIALIAS 0 /*1: Enable anti-aliasing*/
 
 /*Screen refresh settings*/
 #define LV_REFR_PERIOD 40   /*Screen refresh period in milliseconds*/
@@ -89,9 +89,9 @@
 #define LV_TXT_BREAK_CHARS " ,.;:-_" /*Can break texts on these chars*/
 
 /*Graphics feature usage*/
-#define USE_LV_ANIMATION 1 /*1: Enable all animations*/
-#define USE_LV_SHADOW 1    /*1: Enable shadows*/
-#define USE_LV_GROUP 1     /*1: Enable object groups (for keyboards)*/
+#define USE_LV_ANIMATION 0 /*1: Enable all animations*/
+#define USE_LV_SHADOW 0    /*1: Enable shadows*/
+#define USE_LV_GROUP 0     /*1: Enable object groups (for keyboards)*/
 #define USE_LV_GPU 0       /*1: Enable GPU interface*/
 #define USE_LV_REAL_DRAW                                                       \
   1 /*1: Enable function which draw directly to the frame buffer instead of    \

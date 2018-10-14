@@ -1,15 +1,3 @@
-/*
- * gfx.c
- *
- *  Created on: 24.05.2014
- *      Author: Florian
- */
-
-
-/*---------------------------------------------------------------------*
- *  include files                                                      *
- *---------------------------------------------------------------------*/
-
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -17,38 +5,17 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-//#include "stm32f4xx.h"
-//#include "ff.h"
+
 #include "font.h"
 #include "gfx.h"
-#include "jpeg.h"
-//#include "lcd.h"
 #include "main.h"
-
-/*---------------------------------------------------------------------*
- *  local definitions                                                  *
- *---------------------------------------------------------------------*/
 
 #define abs(X) (((X) < 0 ) ? -(X) : (X))
 #define sgn(X) (((X) < 0 ) ? -1 : 1)
-
-/*---------------------------------------------------------------------*
- *  external declarations                                              *
- *---------------------------------------------------------------------*/
-
-/*---------------------------------------------------------------------*
- *  public data                                                        *
- *---------------------------------------------------------------------*/
-
 //gfx_obj_t* gfx_objects[GFX_MAX_OBJECTS];
 
-/*---------------------------------------------------------------------*
- *  private data                                                       *
- *---------------------------------------------------------------------*/
 
-/*---------------------------------------------------------------------*
- *  private functions                                                  *
- *---------------------------------------------------------------------*/
+/* private functions */
 
 /*
  * Map ISO8859-1 character to font character index
@@ -56,93 +23,35 @@
  * @param[in]	chr	Character to map
  * @return		Mapped character
  */
-static inline char gfx_map_char (char chr)
-{
-	switch (chr)
-	{
+static inline char gfx_map_char(char chr) {
+	switch(chr){
 		case 0xE4:
 			// ae
-			return (char)128;
-
+			return 128; 
 		case 0xF6:
 			// oe
-			return (char)129;
-
+			return 129; 
 		case 0xFC:
 			// ue
-			return (char)130;
-
+			return 130; 
 		case 0xC4:
 			// AE
-			return (char)131;
-
+			return 131; 
 		case 0xD6:
 			// OE
-			return (char)132;
-
+			return 132; 
 		case 0xDC:
 			// UE
-			return (char)133;
-
+			return 133; 
 		case 0xDF:
 			// ss
-			return (char)134;
-
+			return 134; 
 		case 0xA7:
 			// Euro
-			return (char)135;
-
+			return 135; 
 		default:
 			return chr;
 	}
-}
-
-/*
- * Convert pixel format into color mode
- *
- * @param[in]	pixel_format	Pixel format to convert
- * @return		Converted color mode
- */
-static uint32_t gfx_convert_colormode (gfx_pixel_format_t pixel_format)
-{
-	/*switch (pixel_format)
-	{
-		case GFX_PIXEL_FORMAT_RGB565:
-			return DMA2D_RGB565;
-
-		case GFX_PIXEL_FORMAT_ARGB8888:
-			return DMA2D_ARGB8888;
-
-		default:
-			fatal_error ("unknown pixel format");
-			return 0;
-	}*/
-    return 0;
-}
-
-/*
- * Returns the number of bytes per pixel, depending on the pixel format
- *
- * @param[in]	img	Image
- * @return		Bytes per pixel
- */
-static inline uint8_t gfx_bytes_per_pixel (gfx_image_t* img)
-{
-	/*
-    switch (img->pixel_format)
-	{
-		case GFX_PIXEL_FORMAT_RGB565:
-			return 2;
-
-		case GFX_PIXEL_FORMAT_ARGB8888:
-			return 4;
-
-		default:
-			fatal_error ("unknown pixel format");
-			return 0;
-	}
-    */
-    return ' ';
 }
 
 /*
@@ -944,322 +853,6 @@ void gfx_draw_character_centered (const char chr, gfx_image_t* img, const gfx_fo
 }
 
 /*
- * Draw string and break line after character
- *
- * @param[in]	str			String to draw
- * @param[in]	font		Font
- * @param[in]	img			Image to draw onto
- * @param[in]	x			X
- * @param[in]	y			Y
- * @param[in]	max_width	Maximum width of font rectangle. 0 = ignore
- * @param[in]	color		Color
- */
-void gfx_draw_string (const char* str, const gfx_font_t* font, gfx_image_t* img, uint16_t x, uint16_t y, uint16_t max_width, uint32_t color)
-{
-	/*
-    uint16_t str_index;
-	uint16_t char_width;
-	uint16_t char_height;
-	uint16_t cur_x;
-	uint16_t cur_y;
-
-	str_index = 0;
-	cur_x = x;
-	cur_y = y;
-
-	while (str[str_index] != '\0')
-	{
-		//get word dimensions and length
-		gfx_get_char_dimensions (str[str_index], font, &char_width, &char_height);
-
-		if ((cur_x + char_width > img->width) || ((max_width != 0) && (cur_x + char_width > max_width)))
-		{
-			//char does not fit in line, start new line
-			cur_x = x;
-			cur_y += font->char_height + font->line_space;
-		}
-
-		if (str[str_index] == '\n')
-		{
-			cur_x = x;
-			cur_y += font->char_height + font->line_space;
-		}
-		else if (str[str_index] == '\r')
-		{
-			//ignore
-		}
-		else
-		{
-			if (cur_y + char_height > img->height)
-			{
-				printf ("text too high: %s. max. height = %d, calculated = %d\n", str, img->height, cur_y + char_height);
-				return;
-			}
-
-			cur_x += gfx_draw_character (str[str_index], img, cur_x, cur_y, font, color) + font->char_space;
-		}
-
-		str_index++;
-	}
-    */
-}
-
-/*
- * Draw string and break line after word
- *
- * @param[in]	str			String to draw
- * @param[in]	font		Font
- * @param[in]	img			Image to draw onto
- * @param[in]	x			X
- * @param[in]	y			Y
- * @param[in]	max_width	Maximum width of font rectangle. 0 = ignore
- * @param[in]	color		Color
- */
-void gfx_draw_string_wrapped (const char* str, const gfx_font_t* font, gfx_image_t* img, uint16_t x, uint16_t y, uint16_t max_width, uint32_t color)
-{
-	/*uint16_t str_index;
-	uint16_t word_length;
-	uint16_t word_width;
-	uint16_t word_height;
-	uint16_t i;
-	uint16_t cur_x;
-	uint16_t cur_y;
-
-	str_index = 0;
-	cur_x = x;
-	cur_y = y;
-
-	while (str[str_index] != '\0')
-	{
-		if (str[str_index] == '\n')
-		{
-			//new line
-			cur_x = x;
-			cur_y += font->char_height + font->line_space;
-			str_index++;
-			continue;
-		}
-
-		//get word dimensions and length
-		word_length = gfx_measure_string (&str[str_index], font, true, &word_width, &word_height);
-
-		if ((cur_x + word_width > img->width) || ((max_width != 0) && (cur_x + word_width > max_width)))
-		{
-			//word does not fit in line, start new line
-			cur_x = x;
-			cur_y += font->char_height + font->line_space;
-		}
-
-		if (cur_y + word_height > img->height)
-		{
-			printf ("text too high: %s. max. height = %d, calculated = %d\n", str, img->height, cur_y + word_height);
-			return;
-		}
-
-		for (i = 0; i < word_length; i++)
-		{
-			cur_x += gfx_draw_character (str[str_index + i], img, cur_x, cur_y, font, color) + font->char_space;
-		}
-
-		str_index += word_length;
-
-		if (str[str_index] == ' ')
-		{
-			cur_x += gfx_draw_character (' ', img, cur_x, cur_y, font, color) + font->char_space;
-			str_index++;
-		}
-	}
-    */
-}
-
-/*
- * Draw string vertically centered on image
- *
- * @param[in]	str		String to draw
- * @param[in]	font	Font
- * @param[in]	img		Image to draw onto
- * @param[in]	y		Y
- * @param[in]	color	Color
- */
-void gfx_draw_string_centered (const char* str, const gfx_font_t* font, gfx_image_t* img, uint16_t y, uint32_t color)
-{
-	//uint16_t str_width;
-	//uint16_t str_height;
-
-	//gfx_measure_string (str, font, false, &str_width, &str_height);
-	//gfx_draw_string_wrapped (str, font, img, (img->width - str_width) / 2, y, 0, color);
-}
-
-#if 1
-/*
- * Rotate image using integer arithmetic
- *
- * @param[in]	src			Source image
- * @param[in]	dst			Destination image
- * @param[in]	radians		Rotation in radians
- * @param[in]	back_color	Background color for areas not covered by source image
- */
-void gfx_rotate (gfx_image_t* src, gfx_image_t* dst, float radians, uint32_t back_color)
-{
-    /*
-	int16_t x;
-	int16_t y;
-	int16_t src_x;
-	int16_t src_y;
-	int16_t src_width;
-	int16_t src_height;
-	int16_t dst_width;
-	int16_t dst_height;
-	int16_t src_center_x;
-	int16_t src_center_y;
-	int16_t dst_center_x;
-	int16_t dst_center_y;
-	int16_t cosine;
-	int16_t sine;
-
-	cosine = (int16_t)(cos (radians) * 1000.0);
-	sine = (int16_t)(sin (radians) * 1000.0);
-
-	src_width = src->width;
-	src_height = src->height;
-
-	dst_width = dst->width;
-	dst_height = dst->height;
-
-	src_center_x = src_width / 2;
-	src_center_y = src_height / 2;
-
-	dst_center_x = dst_width / 2;
-	dst_center_y = dst_height / 2;
-
-	for (y = 0; y < dst_height; y++)
-	{
-		for (x = 0; x < dst_width; x++)
-		{
-			src_x = (int16_t)((((x - dst_center_x) * cosine) + ((y - dst_center_y) * sine)) / 1000) + src_center_x;
-			src_y = (int16_t)((((y - dst_center_y) * cosine) - ((x - dst_center_x) * sine)) / 1000) + src_center_y;
-
-			if ((src_x > 0) && (src_x < src_width) && (src_y > 0) && (src_y < src_height))
-			{
-				((uint32_t*)dst->pixel_data)[y * dst_width + x] = ((uint32_t*)src->pixel_data)[src_y * src_width + src_x];
-			}
-			else
-			{
-				((uint32_t*)dst->pixel_data)[y * dst_width + x] = back_color;
-			}
-		}
-	}
-    */
-}
-#else
-/*
- * Rotate image using float arithmetic
- *
- * @param[in]	src			Source image
- * @param[in]	dst			Destination image
- * @param[in]	radians		Rotation in radians
- * @param[in]	back_color	Background color for areas not covered by source image
- */
-void gfx_rotate (gfx_image_t* src, gfx_image_t* dst, float radians, uint32_t back_color)
-{
-	int16_t x;
-	int16_t y;
-	int16_t src_x;
-	int16_t src_y;
-	int16_t src_width;
-	int16_t src_height;
-	int16_t dst_width;
-	int16_t dst_height;
-	int16_t src_center_x;
-	int16_t src_center_y;
-	int16_t dst_center_x;
-	int16_t dst_center_y;
-	float cosine;
-	float sine;
-
-	cosine = (float)cos (radians);
-	sine = (float)sin (radians);
-
-	src_width = src->width;
-	src_height = src->height;
-	
-	dst_width = dst->width;
-	dst_height = dst->height;
-	
-	src_center_x = src_width / 2;
-	src_center_y = src_height / 2;
-	
-	dst_center_x = dst_width / 2;
-	dst_center_y = dst_height / 2;
-
-	for (y = 0; y < dst_height; y++)
-	{
-		for (x = 0; x < dst_width; x++)
-		{
-			src_x = (int16_t)((x - dst_center_x) * cosine + (y - dst_center_y) * sine) + src_center_x;
-			src_y = (int16_t)((y - dst_center_y) * cosine - (x - dst_center_x) * sine) + src_center_y;
-
-			if ((src_x > 0) && (src_x < src_width) && (src_y > 0) && (src_y < src_height))
-			{
-				((uint32_t*)dst->pixel_data)[y * dst_width + x] = ((uint32_t*)src->pixel_data)[src_y * src_width + src_x];
-			}
-			else
-			{
-				((uint32_t*)dst->pixel_data)[y * dst_width + x] = back_color;
-			}
-		}
-	}
-}
-#endif
-
-/*
- * Flip an image by 90 degrees clockwise.
- * The object's and image's width and height are adjusted as well.
- *
- * @param[in]	obj		Image object to flip
- */
-void gfx_flip90 (gfx_obj_t* obj)
-{
-    /*
-	uint32_t* tmp;
-	uint16_t size_tmp;
-	uint16_t x;
-	uint16_t y;
-	uint32_t size;
-	uint16_t src_width;
-	uint16_t src_height;
-	gfx_image_t* img_src;
-
-	img_src = (gfx_image_t*)obj->data;
-
-	src_width = img_src->width;
-	src_height = img_src->height;
-	size = src_width * src_height * gfx_bytes_per_pixel (img_src);
-
-	tmp = (uint32_t*)malloc (size);
-
-	for (y = 0; y < src_height; y++)
-	{
-		for (x = 0; x < src_width; x++)
-		{
-			tmp[x * src_height + (src_height - y - 1)] = ((uint32_t*)img_src->pixel_data)[y * src_width + x];
-		}
-	}
-
-	memcpy (img_src->pixel_data, tmp, size);
-
-	free (tmp);
-
-	size_tmp = img_src->width;
-	img_src->width = img_src->height;
-	img_src->height = size_tmp;
-
-	obj->coords.source_w = img_src->width;
-	obj->coords.source_h = img_src->height;
-    */
-}
-
-/*
  * Copy image from source to destination
  * Destination memory is allocated here
  *
@@ -1648,14 +1241,12 @@ void gfx_init_img_obj (gfx_obj_t* obj, gfx_image_t* img)
  */
 void gfx_init_img_coord (gfx_coord_t* coord, gfx_image_t* img)
 {
-    /*
 	coord->dest_x = 0;
 	coord->dest_y = 0;
 	coord->source_w = img->width;
 	coord->source_h = img->height;
 	coord->source_x = 0;
 	coord->source_y = 0;
-    */
 }
 
 /*---------------------------------------------------------------------*
