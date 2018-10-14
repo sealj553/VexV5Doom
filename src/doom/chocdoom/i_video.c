@@ -39,6 +39,7 @@ static const char rcsid[] = "$Id: i_x.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 #include <stdbool.h>
 
 #include "pros/apix.h"
+#include "api.h"
 
 // The screen buffer; this is modified to draw things to the screen
 
@@ -47,11 +48,6 @@ byte *I_VideoBuffer = NULL;
 // If true, game is running as a screensaver
 
 boolean screensaver_mode = false;
-
-// Flag indicating whether the screen is currently visible:
-// when the screen isnt visible, don't render the screen
-
-boolean screenvisible;
 
 // Gamma correction level to use
 int usegamma = 0;
@@ -91,8 +87,6 @@ static bool run;
 void I_InitGraphics (void)
 {
     I_VideoBuffer = (byte*)Z_Malloc (SCREENWIDTH * SCREENHEIGHT, PU_STATIC, NULL);
-
-    screenvisible = true;
 }
 
 void I_ShutdownGraphics (void)
@@ -102,10 +96,14 @@ void I_ShutdownGraphics (void)
 
 void I_StartFrame (void) { }
 
-//TODO:add controller stuff here!!!
+//TODO:add controller stuff
 void I_GetEvent (void)
 {
-    //event_t event;
+    event_t event;
+
+     
+
+
     //bool button_state;
 
     //button_state = button_read ();

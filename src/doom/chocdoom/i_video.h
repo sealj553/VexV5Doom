@@ -143,7 +143,6 @@ void I_StartTic (void);
 void I_EnableLoadingDisk(void);
 
 extern char *video_driver;
-extern boolean screenvisible;
 
 extern float mouse_acceleration;
 extern int mouse_threshold;

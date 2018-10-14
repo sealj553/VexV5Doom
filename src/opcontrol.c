@@ -1,7 +1,5 @@
 #include "main.h"
 
-#include "doom/main.h"
-
 /**
  * Runs the operator control code. This function will be started in its own task
  * with the default priority and stack size whenever the robot is enabled via
@@ -15,9 +13,10 @@
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
+
+extern void D_DoomMain(void);
+
 void opcontrol() {
-    //create this inside implementation folders
-	//pros::Controller master(pros::E_CONTROLLER_MASTER);
-    //run doom
-    mainfunc();
+    printf("Starting VexV5Doom\n");
+    D_DoomMain();
 }
