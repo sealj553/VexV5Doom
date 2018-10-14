@@ -60,15 +60,15 @@
 #define LV_ANTIALIAS 0 /*1: Enable anti-aliasing*/
 
 /*Screen refresh settings*/
-#define LV_REFR_PERIOD 40   /*Screen refresh period in milliseconds*/
-#define LV_INV_FIFO_SIZE 32 /*The average count of objects on a screen */
+#define LV_REFR_PERIOD 33   /*Screen refresh period in milliseconds*/
+#define LV_INV_FIFO_SIZE 2 /*The average count of objects on a screen */
 
 /*=================
    Misc. setting
  *=================*/
 
 /*Input device settings*/
-#define LV_INDEV_READ_PERIOD 50 /*Input device read period in milliseconds*/
+#define LV_INDEV_READ_PERIOD 1000 /*Input device read period in milliseconds*/
 #define LV_INDEV_POINT_MARKER                                                  \
   0 /*Mark the pressed points  (required: USE_LV_REAL_DRAW = 1)*/
 #define LV_INDEV_DRAG_LIMIT 10 /*Drag threshold in pixels */
