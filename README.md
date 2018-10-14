@@ -16,6 +16,7 @@ prosv5 make
 prosv5 upload
 ````
 * Prepare the microSD card
+
 The microSD card needs to be formatted as fat32.
 copy the `usd` folder to the microSD card
 * Insert the microSD card and start the game
@@ -27,7 +28,7 @@ copy the `usd` folder to the microSD card
 
 ## Limitations
 Due to hardware limitations, the following is not possible on the V5:
-* Multiplayer (duh)
+* Multiplayer
 * Sound
 * Probably other things
 
@@ -35,14 +36,23 @@ Due to hardware limitations, the following is not possible on the V5:
 This can be seen and changed in `src/doom/chocdoom/i_video.c` in function `I_GetEvent`
 
 left analog x = turn left/right
+
 left analog y = move forward/back
+
 right analog x = strafe left/right
 
+
 a = fire
+
 b = use
+
 x = enter
+
 y = escape
 
-dpad is arrow keys
+
+dpad = arrow keys
+
 l1 = prev weapon
+
 r1 = next weapon
