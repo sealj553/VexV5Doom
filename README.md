@@ -1,6 +1,6 @@
 # VexV5Doom
 
-This is a port of id Software's DOOM for the Vex V5 Robot Brain.
+This is a port of id Software's DOOM for the Vex V5 Robot Brain, using the [PROS](https://github.com/purduesigbots/pros) kernel.
 
 It's based on floppes' [stm32doom](https://github.com/floppes/stm32doom) port which uses [Chocolate Doom](https://github.com/chocolate-doom/chocolate-doom)'s codebase.
 
