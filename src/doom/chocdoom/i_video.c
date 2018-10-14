@@ -127,7 +127,6 @@ void I_ShutdownGraphics (void)
 void I_StartFrame (void) { }
 
 void update_controller(void){
-    //unused ones commented out for efficiency
     c_state.a_lx  = controller_get_analog(E_CONTROLLER_MASTER,  E_CONTROLLER_ANALOG_LEFT_X);
     c_state.a_ly  = controller_get_analog(E_CONTROLLER_MASTER,  E_CONTROLLER_ANALOG_LEFT_Y);
     c_state.a_rx  = controller_get_analog(E_CONTROLLER_MASTER,  E_CONTROLLER_ANALOG_RIGHT_X);
@@ -158,21 +157,37 @@ void check_button(int prev, int curr, int action){
     }
 }
 
-//TODO:add controller stuff
 void I_GetEvent (void)
 {
+
+    // from d_event.h:
+    // Event-related data that depends on the type of event:
+    //
+    // ev_keydown/ev_keyup:
+    //    data1: Key code (from doomkeys.h) of the key that was
+    //           pressed or released.
+    //    data2: Ascii text of the character that was pressed,
+    //           shifted appropriately (eg. '$' if 4 was pressed
+    //           while shift was held).
+    //
+    // ev_joystick:
+    //    data1: Bitfield of buttons currently pressed.
+    //    data2: X axis mouse movement (turn).
+    //    data3: Y axis mouse movement (forward/backward).
+    //    data4: Third axis mouse movement (strafe).
+
     c_oldstate = c_state;
     update_controller();
 
     //joystick and strafe
-    //right x = turn left/right
-    //left x = strafe left/right
+    //left x = turn left/right
     //left y = move forward/back
+    //right x = strafe left/right
     event.type = ev_joystick;
     event.data1 = 0;
-    event.data2 = c_state.a_rx;
+    event.data2 = c_state.a_lx;
     event.data3 = c_state.a_ly;
-    event.data4 = c_state.a_lx;
+    event.data4 = c_state.a_rx;
     D_PostEvent(&event);
 
     //other buttons
@@ -206,8 +221,6 @@ void I_UpdateNoBlit(void){}
 
 void I_FinishUpdate(void){
     lv_vdb_t *framebuffer = lv_vdb_get();
-
-    //lcd_vsync = false;
 
     for (int y = 0; y < SCREENHEIGHT; ++y) {
         for (int x = 0; x < SCREENWIDTH; ++x) {
