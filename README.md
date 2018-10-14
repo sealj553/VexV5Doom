@@ -26,12 +26,6 @@ Then copy the `usd` folder (which contains the WAD file) to the microSD card
 * Save and load games on the microSD card
 * Load standard doom WAD files
 
-## Limitations
-Due to hardware limitations, the following is not possible on the V5:
-* Sound
-* Multiplayer
-* Probably other things
-
 ## Controls
 This can be seen and changed in `src/doom/chocdoom/i_video.c` in function `I_GetEvent`
 
@@ -54,3 +48,9 @@ dpad = arrow keys
 l1 = prev weapon
 
 r1 = next weapon
+
+## Limitations
+Due to hardware limitations, the following is not possible on the V5:
+* Sound
+* Multiplayer
+* Probably other things
