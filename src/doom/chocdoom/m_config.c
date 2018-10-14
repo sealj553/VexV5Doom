@@ -2096,27 +2096,11 @@ char *M_GetSaveGameDir(char *iwadname)
     }
     else
     {
-#if ORIGCODE
-        // ~/.chocolate-doom/savegames
-
-        topdir = M_StringJoin(configdir, "savegame", NULL);
-        M_MakeDirectory(topdir);
-
-        // eg. ~/.chocolate-doom/savegames/doom2.wad/
-
-        savegamedir = M_StringJoin(topdir, DIR_SEPARATOR_S, iwadname,
-                                   DIR_SEPARATOR_S, NULL);
-
-        M_MakeDirectory(savegamedir);
-
-        free(topdir);
-#else
         savegamedir = M_StringJoin(configdir, "savegame/", NULL);
 
         M_MakeDirectory(savegamedir);
 
         printf ("Using %s for savegames\n", savegamedir);
-#endif
     }
 
     return savegamedir;
