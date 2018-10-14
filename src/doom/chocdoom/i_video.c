@@ -78,16 +78,15 @@ int usemouse = 0;
 
 int vanilla_keyboard_mapping = true;
 
-
-typedef struct
-{
+typedef struct {
 	byte r;
 	byte g;
 	byte b;
 } col_t;
 
 // Palette converted to RGB888
-static uint16_t rgb888_palette[256];
+//static uint32_t rgb888_palette[256];
+static lv_color_t rgb888_palette[256];
 
 // run state
 static bool run;
@@ -104,10 +103,7 @@ void I_ShutdownGraphics (void)
 	Z_Free (I_VideoBuffer);
 }
 
-void I_StartFrame (void)
-{
-
-}
+void I_StartFrame (void) { }
 
 //TODO:add controller stuff here!!!
 void I_GetEvent (void)
@@ -241,7 +237,7 @@ void I_FinishUpdate(void){
 		for (int x = 0; x < SCREENWIDTH; ++x) {
 			byte index = I_VideoBuffer[y * SCREENWIDTH + x];
 
-			//((uint16_t*)lcd_frame_buffer)[x * GFX_MAX_WIDTH + (GFX_MAX_WIDTH - y - 1)] = rgb888_palette[index];
+			(*framebuffer).buf[x * SCREENWIDTH + (SCREENWIDTH - y - 1)] = rgb888_palette[index];
 		}
 	}
 
@@ -263,48 +259,42 @@ void I_ReadScreen (byte* scr)
 //
 void I_SetPalette (byte* palette)
 {
-	col_t* c;
+    for(int i = 0; i < 256; i++){
+        col_t* c = (col_t*)palette;
 
-	for(int i = 0; i < 256; i++){
-		c = (col_t*)palette;
+        rgb888_palette[i].red   = gammatable[usegamma][c->r];
+        rgb888_palette[i].green = gammatable[usegamma][c->g];
+        rgb888_palette[i].blue  = gammatable[usegamma][c->b];
+        rgb888_palette[i].alpha = 0;
 
-		rgb888_palette[i] = GFX_RGB888(gammatable[usegamma][c->r],
-									   gammatable[usegamma][c->g],
-									   gammatable[usegamma][c->b]);
-
-		palette += 3;
-	}
+        palette += 3;
+    }
 }
 
 // Given an RGB value, find the closest matching palette index.
 
 int I_GetPaletteIndex (int r, int g, int b)
 {
-    int best, best_diff, diff;
-    int i;
-    col_t color;
+    int best = 0;
+    int best_diff = INT_MAX;
 
-    best = 0;
-    best_diff = INT_MAX;
+    for (int i = 0; i < 256; ++i) {
+        col_t color = {
+            rgb888_palette[i].red,
+            rgb888_palette[i].green,
+            rgb888_palette[i].blue
+        };
 
-    for (i = 0; i < 256; ++i)
-    {
-    	color.r = GFX_RGB888_R(rgb888_palette[i]);
-    	color.g = GFX_RGB888_G(rgb888_palette[i]);
-    	color.b = GFX_RGB888_B(rgb888_palette[i]);
+        int diff = (r - color.r) * (r - color.r)
+            + (g - color.g) * (g - color.g)
+            + (b - color.b) * (b - color.b);
 
-        diff = (r - color.r) * (r - color.r)
-             + (g - color.g) * (g - color.g)
-             + (b - color.b) * (b - color.b);
-
-        if (diff < best_diff)
-        {
+        if (diff < best_diff) {
             best = i;
             best_diff = diff;
         }
 
-        if (diff == 0)
-        {
+        if (diff == 0) {
             break;
         }
     }
@@ -312,38 +302,20 @@ int I_GetPaletteIndex (int r, int g, int b)
     return best;
 }
 
-void I_BeginRead (void)
-{
-}
+void I_BeginRead (void) { }
 
-void I_EndRead (void)
-{
-}
+void I_EndRead (void) { }
 
-void I_SetWindowTitle (char *title)
-{
-}
+void I_SetWindowTitle (char *title) { }
 
-void I_GraphicsCheckCommandLine (void)
-{
-}
+void I_GraphicsCheckCommandLine (void) { }
 
-void I_SetGrabMouseCallback (grabmouse_callback_t func)
-{
-}
+void I_SetGrabMouseCallback (grabmouse_callback_t func) { }
 
-void I_EnableLoadingDisk (void)
-{
-}
+void I_EnableLoadingDisk (void) { }
 
-void I_BindVideoVariables (void)
-{
-}
+void I_BindVideoVariables (void) { }
 
-void I_DisplayFPSDots (boolean dots_on)
-{
-}
+void I_DisplayFPSDots (boolean dots_on) { }
 
-void I_CheckIsScreensaver (void)
-{
-}
+void I_CheckIsScreensaver (void) { }

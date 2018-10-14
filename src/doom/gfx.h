@@ -16,13 +16,10 @@
 //#define GFX_ARGB8888_B(color)		((color & 0x000000FF))
 //#define GFX_ARGB8888_A(color)		((color & 0xFF000000) >> 24)
 
-#define GFX_RGB888(r, g, b)	    (((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF))
-#define GFX_RGB888_R(color)		((color & 0x00FF0000) >> 16)
-#define GFX_RGB888_G(color)		((color & 0x0000FF00) >> 8)
-#define GFX_RGB888_B(color)		((color & 0x000000FF))
-
-#define GFX_TRANSPARENT				0x00
-#define GFX_OPAQUE					0xFF
+#define GFX_RGB888(r, g, b)	    ((r << 16) | (g << 8) | b)
+//#define GFX_RGB888_R(color)		((color & 0x00FF0000) >> 16)
+//#define GFX_RGB888_G(color)		((color & 0x0000FF00) >> 8)
+//#define GFX_RGB888_B(color)		((color & 0x000000FF))
 
 typedef enum {
 	GFX_PIXEL_FORMAT_RGB565,
