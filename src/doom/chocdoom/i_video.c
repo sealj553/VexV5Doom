@@ -148,7 +148,7 @@ void update_controller(void){
 void check_button(int prev, int curr, int action){
     if(!prev && curr){
         event.type = ev_keydown;
-        event.data1 = action;
+        event.data1 = action; //key code
         D_PostEvent(&event);
     } else if(prev && !curr){
         event.type = ev_keyup;
@@ -159,23 +159,6 @@ void check_button(int prev, int curr, int action){
 
 void I_GetEvent (void)
 {
-
-    // from d_event.h:
-    // Event-related data that depends on the type of event:
-    //
-    // ev_keydown/ev_keyup:
-    //    data1: Key code (from doomkeys.h) of the key that was
-    //           pressed or released.
-    //    data2: Ascii text of the character that was pressed,
-    //           shifted appropriately (eg. '$' if 4 was pressed
-    //           while shift was held).
-    //
-    // ev_joystick:
-    //    data1: Bitfield of buttons currently pressed.
-    //    data2: X axis mouse movement (turn).
-    //    data3: Y axis mouse movement (forward/backward).
-    //    data4: Third axis mouse movement (strafe).
-
     c_oldstate = c_state;
     update_controller();
 
@@ -184,10 +167,10 @@ void I_GetEvent (void)
     //left y = move forward/back
     //right x = strafe left/right
     event.type = ev_joystick;
-    event.data1 = 0;
-    event.data2 = c_state.a_lx;
-    event.data3 = c_state.a_ly;
-    event.data4 = c_state.a_rx;
+    event.data1 = 0; //bitfield of buttons
+    event.data2 = c_state.a_lx; //x axis mouse (turn)
+    event.data3 = c_state.a_ly; //y axis mouse (forward/backward)
+    event.data4 = c_state.a_rx; //3rd axis mouse (strafe)
     D_PostEvent(&event);
 
     //other buttons
