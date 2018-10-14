@@ -109,7 +109,7 @@
 #define USE_LV_THEME_TEMPL 0 /*Just for test*/
 #define USE_LV_THEME_DEFAULT                                                   \
   0 /*Built mainly from the built-in styles. Consumes very few RAM*/
-#define USE_LV_THEME_ALIEN 1 /*Dark futuristic theme*/
+#define USE_LV_THEME_ALIEN 0 /*Dark futuristic theme*/
 #define USE_LV_THEME_NIGHT 0 /*Dark elegant theme*/
 #define USE_LV_THEME_MONO 0  /*Mono color theme for monochrome displays*/
 #define USE_LV_THEME_MATERIAL                                                  \
@@ -150,8 +150,8 @@
 #define USE_PROS_FONT_DEJAVU_MONO_10 0
 #define USE_PROS_FONT_DEJAVU_MONO_10_LATIN_SUP 0
 
-#define USE_PROS_FONT_DEJAVU_MONO_20 4
-#define USE_PROS_FONT_DEJAVU_MONO_LATIN_SUP_20 4
+#define USE_PROS_FONT_DEJAVU_MONO_20 0
+#define USE_PROS_FONT_DEJAVU_MONO_LATIN_SUP_20 0
 
 #define USE_PROS_FONT_DEJAVU_MONO_30 0
 #define USE_PROS_FONT_DEJAVU_MONO_30_LATIN_SUP 0
@@ -205,7 +205,7 @@
 #define USE_LV_WIN 1
 
 /*Tab (dependencies: lv_page, lv_btnm)*/
-#define USE_LV_TABVIEW 1
+#define USE_LV_TABVIEW 0
 #if USE_LV_TABVIEW != 0
 #define LV_TABVIEW_ANIM_TIME                                                   \
   300 /*Time of slide animation [ms] (0: no animation)*/
@@ -216,25 +216,25 @@
  *************************/
 
 /*Bar (dependencies: -)*/
-#define USE_LV_BAR 1
+#define USE_LV_BAR 0
 
 /*Line meter (dependencies: *;)*/
-#define USE_LV_LMETER 1
+#define USE_LV_LMETER 0
 
 /*Gauge (dependencies:bar, lmeter)*/
-#define USE_LV_GAUGE 1
+#define USE_LV_GAUGE 0
 
 /*Chart (dependencies: -)*/
-#define USE_LV_CHART 1
+#define USE_LV_CHART 0
 
 /*LED (dependencies: -)*/
-#define USE_LV_LED 1
+#define USE_LV_LED 0
 
 /*Message box (dependencies: lv_rect, lv_btnm, lv_label)*/
-#define USE_LV_MBOX 1
+#define USE_LV_MBOX 0
 
 /*Text area (dependencies: lv_label, lv_page)*/
-#define USE_LV_TA 1
+#define USE_LV_TA 0
 #if USE_LV_TA != 0
 #define LV_TA_CURSOR_BLINK_TIME 400 /*ms*/
 #define LV_TA_PWD_SHOW_TIME 1500    /*ms*/
@@ -248,17 +248,17 @@
 #define USE_LV_BTN 1
 
 /*Button matrix (dependencies: -)*/
-#define USE_LV_BTNM 1
+#define USE_LV_BTNM 0
 
 /*Keyboard (dependencies: lv_btnm)*/
 #define USE_LV_KB 0
 
 /*Check box (dependencies: lv_btn, lv_label)*/
-#define USE_LV_CB 1
+#define USE_LV_CB 0
 
 /*List (dependencies: lv_page, lv_btn, lv_label, (lv_img optionally for icons
  * ))*/
-#define USE_LV_LIST 1
+#define USE_LV_LIST 0
 #if USE_LV_LIST != 0
 #define LV_LIST_FOCUS_TIME                                                     \
   100 /*Default animation time of focusing to a list element [ms] (0: no       \
@@ -266,14 +266,14 @@
 #endif
 
 /*Drop down list (dependencies: lv_page, lv_label)*/
-#define USE_LV_DDLIST 1
+#define USE_LV_DDLIST 0
 #if USE_LV_DDLIST != 0
 #define LV_DDLIST_ANIM_TIME                                                    \
   200 /*Open and close default animation time [ms] (0: no animation)*/
 #endif
 
 /*Roller (dependencies: lv_ddlist)*/
-#define USE_LV_ROLLER 1
+#define USE_LV_ROLLER 0
 #if USE_LV_ROLLER != 0
 #define LV_ROLLER_ANIM_TIME                                                    \
   200 /*Focus animation time [ms] (0: no                                       \
@@ -281,9 +281,9 @@
 #endif
 
 /*Slider (dependencies: lv_bar)*/
-#define USE_LV_SLIDER 1
+#define USE_LV_SLIDER 0
 
 /*Switch (dependencies: lv_slider)*/
-#define USE_LV_SW 1
+#define USE_LV_SW 0
 
 #endif /*LV_CONF_H*/
