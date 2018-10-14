@@ -39,7 +39,6 @@ static const char rcsid[] = "$Id: i_x.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 #include <stdbool.h>
 
 #include "pros/apix.h"
-#include "gfx.h"
 
 // The screen buffer; this is modified to draw things to the screen
 
@@ -54,6 +53,9 @@ boolean screensaver_mode = false;
 
 boolean screenvisible;
 
+// Gamma correction level to use
+int usegamma = 0;
+
 // Mouse acceleration
 //
 // This emulates some of the behavior of DOS mouse drivers by increasing
@@ -66,10 +68,6 @@ boolean screenvisible;
 float mouse_acceleration = 2.0;
 int mouse_threshold = 10;
 
-// Gamma correction level to use
-
-int usegamma = 0;
-
 int usemouse = 0;
 
 // If true, keyboard mapping is ignored, like in Vanilla Doom.
@@ -79,13 +77,12 @@ int usemouse = 0;
 int vanilla_keyboard_mapping = true;
 
 typedef struct {
-	byte r;
-	byte g;
-	byte b;
+    byte r;
+    byte g;
+    byte b;
 } col_t;
 
 // Palette converted to RGB888
-//static uint32_t rgb888_palette[256];
 static lv_color_t rgb888_palette[256];
 
 // run state
@@ -93,14 +90,14 @@ static bool run;
 
 void I_InitGraphics (void)
 {
-	I_VideoBuffer = (byte*)Z_Malloc (SCREENWIDTH * SCREENHEIGHT, PU_STATIC, NULL);
+    I_VideoBuffer = (byte*)Z_Malloc (SCREENWIDTH * SCREENHEIGHT, PU_STATIC, NULL);
 
-	screenvisible = true;
+    screenvisible = true;
 }
 
 void I_ShutdownGraphics (void)
 {
-	Z_Free (I_VideoBuffer);
+    Z_Free (I_VideoBuffer);
 }
 
 void I_StartFrame (void) { }
@@ -108,122 +105,122 @@ void I_StartFrame (void) { }
 //TODO:add controller stuff here!!!
 void I_GetEvent (void)
 {
-	//event_t event;
-	//bool button_state;
+    //event_t event;
+    //bool button_state;
 
-	//button_state = button_read ();
+    //button_state = button_read ();
 
-	//if (last_button_state != button_state)
-	//{
-	//	last_button_state = button_state;
+    //if (last_button_state != button_state)
+    //{
+    //	last_button_state = button_state;
 
-	//	event.type = last_button_state ? ev_keydown : ev_keyup;
-	//	event.data1 = KEY_FIRE;
-	//	event.data2 = -1;
-	//	event.data3 = -1;
+    //	event.type = last_button_state ? ev_keydown : ev_keyup;
+    //	event.data1 = KEY_FIRE;
+    //	event.data2 = -1;
+    //	event.data3 = -1;
 
-	//	D_PostEvent (&event);
-	//}
+    //	D_PostEvent (&event);
+    //}
 
-	//touch_main ();
+    //touch_main ();
 
-	/*if ((touch_state.x != last_touch_state.x) || (touch_state.y != last_touch_state.y) || (touch_state.status != last_touch_state.status)) {
-		last_touch_state = touch_state;
+    /*if ((touch_state.x != last_touch_state.x) || (touch_state.y != last_touch_state.y) || (touch_state.status != last_touch_state.status)) {
+      last_touch_state = touch_state;
 
-		event.type = (touch_state.status == TOUCH_PRESSED) ? ev_keydown : ev_keyup;
-		event.data1 = -1;
-		event.data2 = -1;
-		event.data3 = -1;
+      event.type = (touch_state.status == TOUCH_PRESSED) ? ev_keydown : ev_keyup;
+      event.data1 = -1;
+      event.data2 = -1;
+      event.data3 = -1;
 
-		if ((touch_state.x > 49)
-		 && (touch_state.x < 72)
-		 && (touch_state.y > 104)
-		 && (touch_state.y < 143)) {
-			// select weapon
-			if (touch_state.x < 60) {
-				// lower row (5-7)
-				if (touch_state.y < 119) {
-					event.data1 = '5';
-				} else if (touch_state.y < 131) {
-					event.data1 = '6';
-				} else {
-					event.data1 = '1';
-				}
-			} else {
-				// upper row (2-4)
-				if (touch_state.y < 119) {
-					event.data1 = '2';
-				} else if (touch_state.y < 131) {
-					event.data1 = '3';
-				} else {
-					event.data1 = '4';
-				}
-			}
-		} else if (touch_state.x < 40) {
-			// button bar at bottom screen
-			if (touch_state.y < 40) {
-				// enter
-				event.data1 = KEY_ENTER;
-			} else if (touch_state.y < 80) {
-				// escape
-				event.data1 = KEY_ESCAPE;
-			} else if (touch_state.y < 120) {
-				// use
-				event.data1 = KEY_USE;
-			} else if (touch_state.y < 160) {
-				// map
-				event.data1 = KEY_TAB;
-			} else if (touch_state.y < 200) {
-				// pause
-				event.data1 = KEY_PAUSE;
-			} else if (touch_state.y < 240) {
-				// toggle run
-				if (touch_state.status == TOUCH_PRESSED) {
-					run = !run;
-					event.data1 = KEY_RSHIFT;
+      if ((touch_state.x > 49)
+      && (touch_state.x < 72)
+      && (touch_state.y > 104)
+      && (touch_state.y < 143)) {
+    // select weapon
+    if (touch_state.x < 60) {
+    // lower row (5-7)
+    if (touch_state.y < 119) {
+    event.data1 = '5';
+    } else if (touch_state.y < 131) {
+    event.data1 = '6';
+    } else {
+    event.data1 = '1';
+    }
+    } else {
+    // upper row (2-4)
+    if (touch_state.y < 119) {
+    event.data1 = '2';
+    } else if (touch_state.y < 131) {
+    event.data1 = '3';
+    } else {
+    event.data1 = '4';
+    }
+    }
+    } else if (touch_state.x < 40) {
+    // button bar at bottom screen
+    if (touch_state.y < 40) {
+    // enter
+    event.data1 = KEY_ENTER;
+    } else if (touch_state.y < 80) {
+    // escape
+    event.data1 = KEY_ESCAPE;
+    } else if (touch_state.y < 120) {
+    // use
+    event.data1 = KEY_USE;
+    } else if (touch_state.y < 160) {
+    // map
+    event.data1 = KEY_TAB;
+    } else if (touch_state.y < 200) {
+    // pause
+    event.data1 = KEY_PAUSE;
+    } else if (touch_state.y < 240) {
+    // toggle run
+    if (touch_state.status == TOUCH_PRESSED) {
+    run = !run;
+    event.data1 = KEY_RSHIFT;
 
-					if (run) {
-						event.type = ev_keydown;
-					} else {
-						event.type = ev_keyup;
-					}
-				} else {
-					return;
-				}
-			} else if (touch_state.y < 280) {
-				// save
-				event.data1 = KEY_F2;
-			} else if (touch_state.y < 320) {
-				// load
-				event.data1 = KEY_F3;
-			}
-		} else {
-			// movement/menu navigation
-			if (touch_state.x < 100) {
-				if (touch_state.y < 100) {
-					event.data1 = KEY_STRAFE_L;
-				} else if (touch_state.y < 220) {
-					event.data1 = KEY_DOWNARROW;
-				} else {
-					event.data1 = KEY_STRAFE_R;
-				}
-			} else if (touch_state.x < 180) {
-				if (touch_state.y < 160) {
-					event.data1 = KEY_LEFTARROW;
-				} else {
-					event.data1 = KEY_RIGHTARROW;
-				}
-			} else {
-				event.data1 = KEY_UPARROW;
-			}
-		}
-		D_PostEvent (&event);
-	}
+    if (run) {
+    event.type = ev_keydown;
+    } else {
+    event.type = ev_keyup;
+    }
+    } else {
+    return;
+    }
+    } else if (touch_state.y < 280) {
+    // save
+    event.data1 = KEY_F2;
+    } else if (touch_state.y < 320) {
+    // load
+    event.data1 = KEY_F3;
+    }
+    } else {
+    // movement/menu navigation
+    if (touch_state.x < 100) {
+        if (touch_state.y < 100) {
+            event.data1 = KEY_STRAFE_L;
+        } else if (touch_state.y < 220) {
+            event.data1 = KEY_DOWNARROW;
+        } else {
+            event.data1 = KEY_STRAFE_R;
+        }
+    } else if (touch_state.x < 180) {
+        if (touch_state.y < 160) {
+            event.data1 = KEY_LEFTARROW;
+        } else {
+            event.data1 = KEY_RIGHTARROW;
+        }
+    } else {
+        event.data1 = KEY_UPARROW;
+    }
+}
+D_PostEvent (&event);
+}
 */
 }
 
 void I_StartTic (void) {
-	I_GetEvent();
+    I_GetEvent();
 }
 
 void I_UpdateNoBlit(void){}
@@ -231,19 +228,15 @@ void I_UpdateNoBlit(void){}
 void I_FinishUpdate(void){
     lv_vdb_t *framebuffer = lv_vdb_get();
 
-	//lcd_vsync = false;
+    //lcd_vsync = false;
 
-	for (int y = 0; y < SCREENHEIGHT; ++y) {
-		for (int x = 0; x < SCREENWIDTH; ++x) {
-			byte index = I_VideoBuffer[y * SCREENWIDTH + x];
-
-			(*framebuffer).buf[x * SCREENWIDTH + (SCREENWIDTH - y - 1)] = rgb888_palette[index];
-		}
-	}
-
-	//lcd_refresh ();
-
-	//lcd_vsync = true;
+    for (int y = 0; y < SCREENHEIGHT; ++y) {
+        for (int x = 0; x < SCREENWIDTH; ++x) {
+            byte index = I_VideoBuffer[y * SCREENWIDTH + x];
+            (*framebuffer).buf[x * SCREENWIDTH + (SCREENWIDTH - y - 1)] = rgb888_palette[index];
+        }
+    }
+    lv_vdb_flush();
 }
 
 //
@@ -259,12 +252,10 @@ void I_ReadScreen (byte* scr)
 //
 void I_SetPalette (byte* palette)
 {
-    for(int i = 0; i < 256; i++){
-        col_t* c = (col_t*)palette;
-
-        rgb888_palette[i].red   = gammatable[usegamma][c->r];
-        rgb888_palette[i].green = gammatable[usegamma][c->g];
-        rgb888_palette[i].blue  = gammatable[usegamma][c->b];
+    for(int i = 0; i < 256; ++i){
+        rgb888_palette[i].red   = gammatable[usegamma][palette[0]];
+        rgb888_palette[i].green = gammatable[usegamma][palette[1]];
+        rgb888_palette[i].blue  = gammatable[usegamma][palette[2]];
         rgb888_palette[i].alpha = 0;
 
         palette += 3;
@@ -279,15 +270,10 @@ int I_GetPaletteIndex (int r, int g, int b)
     int best_diff = INT_MAX;
 
     for (int i = 0; i < 256; ++i) {
-        col_t color = {
-            rgb888_palette[i].red,
-            rgb888_palette[i].green,
-            rgb888_palette[i].blue
-        };
-
-        int diff = (r - color.r) * (r - color.r)
-            + (g - color.g) * (g - color.g)
-            + (b - color.b) * (b - color.b);
+        int diff = 
+            (r - rgb888_palette[i].red   ) * (r - rgb888_palette[i].red   ) +
+            (b - rgb888_palette[i].blue  ) * (b - rgb888_palette[i].blue  ) +
+            (g - rgb888_palette[i].green ) * (g - rgb888_palette[i].green );
 
         if (diff < best_diff) {
             best = i;
