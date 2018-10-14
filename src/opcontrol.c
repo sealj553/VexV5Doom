@@ -17,6 +17,6 @@
 extern void D_DoomMain(void);
 
 void opcontrol() {
-    printf("Starting VexV5Doom\n");
+    printf("Starting DOOM\n");
     D_DoomMain();
 }

@@ -41,6 +41,32 @@ static const char rcsid[] = "$Id: i_x.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 #include "pros/apix.h"
 #include "api.h"
 
+void update_controller(void);
+
+struct controller_state {
+    int32_t
+        a_lx,
+        a_ly,
+        a_rx,
+        a_ry,
+        d_l1,
+        d_l2,
+        d_r1,
+        d_r2,
+        d_up,
+        d_dwn,
+        d_lft,
+        d_rig,
+        d_x,
+        d_b,
+        d_y,
+        d_a;
+}; 
+
+static struct controller_state c_state = { 0 };
+static struct controller_state c_oldstate = { 0 };
+static event_t event;
+
 // The screen buffer; this is modified to draw things to the screen
 
 byte *I_VideoBuffer = NULL;
@@ -96,27 +122,82 @@ void I_ShutdownGraphics (void)
 
 void I_StartFrame (void) { }
 
+void update_controller(void){
+    //unused ones commented out for efficiency
+    c_state.a_lx  = controller_get_analog(E_CONTROLLER_MASTER,  E_CONTROLLER_ANALOG_LEFT_X);
+    c_state.a_ly  = controller_get_analog(E_CONTROLLER_MASTER,  E_CONTROLLER_ANALOG_LEFT_Y);
+    c_state.a_rx  = controller_get_analog(E_CONTROLLER_MASTER,  E_CONTROLLER_ANALOG_RIGHT_X);
+    //c_state.a_ry  = controller_get_analog(E_CONTROLLER_MASTER,  E_CONTROLLER_ANALOG_RIGHT_Y);
+    //c_state.d_l1  = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_L1);
+    //c_state.d_l2  = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_L2);
+    //c_state.d_r1  = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_R1);
+    //c_state.d_r2  = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_R2);
+    c_state.d_up  = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_UP);
+    c_state.d_dwn = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_DOWN);
+    c_state.d_lft = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_LEFT);
+    c_state.d_rig = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_RIGHT);
+    c_state.d_x   = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X);
+    c_state.d_b   = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_B);
+    c_state.d_y   = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_Y);
+    c_state.d_a   = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_A);
+}
+
+void check_button(int prev, int curr, int action){
+    if(!prev && curr){
+        event.type = ev_keydown;
+        event.data1 = action;
+        D_PostEvent(&event);
+    } else if(prev && !curr){
+        event.type = ev_keyup;
+        event.data1 = action;
+        D_PostEvent(&event);
+    }
+}
+
 //TODO:add controller stuff
 void I_GetEvent (void)
 {
-    event_t event;
+    c_oldstate = c_state;
+    update_controller();
 
-     
+    //joystick and strafe
+    //right x = turn left/right
+    //left x = strafe left/right
+    //left y = move forward/back
+    event.type = ev_joystick;
+    event.data1 = 0;
+    event.data2 = c_state.a_rx;
+    event.data3 = c_state.a_ly;
+    event.data4 = c_state.a_lx;
+    D_PostEvent(&event);
+
+    //other buttons
+    //a = fire
+    check_button(c_oldstate.d_a, c_state.d_a, KEY_FIRE);
+    //b = use
+    check_button(c_oldstate.d_b, c_state.d_b, KEY_USE);
+    //x = enter
+    check_button(c_oldstate.d_x, c_state.d_x, KEY_ENTER);
+    //y = escape
+    check_button(c_oldstate.d_y, c_state.d_y, KEY_ESCAPE);
+
+    //dpad is arrow keys
+    check_button(c_oldstate.d_up,  c_state.d_up,  KEY_UPARROW);
+    check_button(c_oldstate.d_dwn, c_state.d_dwn, KEY_DOWNARROW);
+    check_button(c_oldstate.d_lft, c_state.d_lft, KEY_LEFTARROW);
+    check_button(c_oldstate.d_rig, c_state.d_rig, KEY_RIGHTARROW);
+
 
 
     //bool button_state;
-
     //button_state = button_read ();
-
     //if (last_button_state != button_state)
     //{
     //	last_button_state = button_state;
-
     //	event.type = last_button_state ? ev_keydown : ev_keyup;
     //	event.data1 = KEY_FIRE;
     //	event.data2 = -1;
     //	event.data3 = -1;
-
     //	D_PostEvent (&event);
     //}
 
