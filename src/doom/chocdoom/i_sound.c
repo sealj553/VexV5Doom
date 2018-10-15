@@ -200,7 +200,8 @@ void I_InitSound(boolean use_sfx_prefix)
     // Disable all sound output.
     //
 
-    nosound = M_CheckParm("-nosound") > 0;
+    //nosound = M_CheckParm("-nosound") > 0;
+    nosound = true;
 
     //!
     // @vanilla

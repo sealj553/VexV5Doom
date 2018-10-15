@@ -447,8 +447,7 @@ void D_DoomLoop (void)
 
 		TryRunTics (); // will run at least one tic
 
-        //disable this?
-		S_UpdateSounds (players[consoleplayer].mo);// move positional sounds
+		//S_UpdateSounds (players[consoleplayer].mo);// move positional sounds
 
         D_Display ();
     }
