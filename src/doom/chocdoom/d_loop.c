@@ -307,11 +307,10 @@ void D_StartGameLoop(void)
     lasttime = GetAdjustedTime() / ticdup;
 }
 
-#if ORIGCODE
 //
 // Block until the game start message is received from the server.
 //
-
+/*
 static void BlockUntilStart(net_gamesettings_t *settings,
                             netgame_startup_callback_t callback)
 {
@@ -334,13 +333,12 @@ static void BlockUntilStart(net_gamesettings_t *settings,
         I_Sleep(100);
     }
 }
-
-#endif
+*/
 
 void D_StartNetGame(net_gamesettings_t *settings,
                     netgame_startup_callback_t callback)
 {
-#if ORIGCODE
+    /*
     int i;
 
     offsetms = 0;
@@ -436,7 +434,7 @@ void D_StartNetGame(net_gamesettings_t *settings,
     //{
     //    printf("Syncing netgames like Vanilla Doom.\n");
     //}
-#else
+    */
     settings->consoleplayer = 0;
 	settings->num_players = 1;
 	settings->player_classes[0] = player_class;
@@ -446,7 +444,6 @@ void D_StartNetGame(net_gamesettings_t *settings,
 
 	ticdup = settings->ticdup;
 	new_sync = settings->new_sync;
-#endif
 }
 
 boolean D_InitNetGame(net_connect_data_t *connect_data)

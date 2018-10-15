@@ -467,8 +467,7 @@ void W_ReleaseLumpName(char *name)
     W_ReleaseLumpNum(W_GetNumForName(name));
 }
 
-#if 0
-
+/*
 //
 // W_Profile
 //
@@ -530,9 +529,7 @@ void W_Profile (void)
     fclose (f);
 #endif
 }
-
-
-#endif
+*/
 
 // Generate a hash table for fast lookups
 

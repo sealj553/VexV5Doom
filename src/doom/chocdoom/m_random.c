@@ -16,10 +16,6 @@
 //	Random number LUT.
 //
 
-#if ORIGCODE
-#include <time.h>
-#endif
-
 #include "m_random.h"
 #include "api.h"
 
@@ -73,11 +69,8 @@ void M_ClearRandom (void)
     prndindex = 0;
 
     // Seed the M_Random counter from the system time
-#if ORIGCODE
-    rndindex = time(NULL) & 0xff;
-#else
+    //rndindex = time(NULL) & 0xff;
 	rndindex = millis() & 0xff;
-#endif
 }
 
 

@@ -1921,9 +1921,7 @@ static void M_DrawOPLDev(void)
     char *curr, *p;
     int line;
 
-#if ORIGCODE
-    I_OPL_DevMessages(debug, sizeof(debug));
-#endif
+    //I_OPL_DevMessages(debug, sizeof(debug));
 
     curr = debug;
     line = 0;

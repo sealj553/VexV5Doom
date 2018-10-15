@@ -18,17 +18,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#ifdef ORIGCODE
-#include "SDL_mixer.h"
-#endif
-
 #include "config.h"
 #include "doomfeatures.h"
 #include "doomtype.h"
 
-#ifdef ORIGCODE
-#include "gusconf.h"
-#endif
 #include "i_sound.h"
 #include "i_video.h"
 #include "m_argv.h"
@@ -75,17 +68,6 @@ extern int opl_io_port;
 // For native music module:
 
 extern char *timidity_cfg_path;
-
-// DOS-specific options: These are unused but should be maintained
-// so that the config file can be shared between chocolate
-// doom and doom.exe
-
-#if ORIGCODE
-static int snd_sbport = 0;
-static int snd_sbirq = 0;
-static int snd_sbdma = 0;
-static int snd_mport = 0;
-#endif
 
 // Compiled-in sound modules:
 
@@ -438,8 +420,7 @@ boolean I_MusicIsPlaying(void)
 
 void I_BindSoundVariables(void)
 {
-#ifdef ORIGCODE
-    extern int use_libsamplerate;
+    /*extern int use_libsamplerate;
     extern float libsamplerate_scale;
 
     M_BindVariable("snd_musicdevice",   &snd_musicdevice);
@@ -466,18 +447,6 @@ void I_BindSoundVariables(void)
     // Before SDL_mixer version 1.2.11, MIDI music caused the game
     // to crash when it looped.  If this is an old SDL_mixer version,
     // disable MIDI.
-
-#ifdef __MACOSX__
-    {
-        const SDL_version *v = Mix_Linked_Version();
-
-        if (SDL_VERSIONNUM(v->major, v->minor, v->patch)
-          < SDL_VERSIONNUM(1, 2, 11))
-        {
-            snd_musicdevice = SNDDEVICE_NONE;
-        }
-    }
-#endif
-#endif
+*/
 }
 

@@ -30,10 +30,6 @@
 #include <unistd.h>
 #endif
 
-#ifdef ORIGCODE
-#include "SDL.h"
-#endif
-
 #include "config.h"
 
 #include "deh_str.h"
@@ -41,7 +37,7 @@
 #include "m_argv.h"
 #include "m_config.h"
 #include "m_misc.h"
-#include "i_joystick.h"
+//#include "i_joystick.h"
 #include "i_sound.h"
 #include "i_timer.h"
 #include "i_video.h"
@@ -209,16 +205,8 @@ void I_PrintStartupBanner(char *gamedescription)
 
 boolean I_ConsoleStdout(void)
 {
-#ifdef _WIN32
-    // SDL "helpfully" always redirects stdout to a file.
-    return 0;
-#else
-#if ORIGCODE
-    return isatty(fileno(stdout));
-#else
+    //return isatty(fileno(stdout));
 	return 0;
-#endif
-#endif
 }
 
 //
@@ -256,22 +244,6 @@ void I_Quit (void)
         entry->func();
         entry = entry->next;
     }
-
-#if ORIGCODE
-    SDL_Quit();
-
-    exit(0);
-#endif
-}
-
-#if !defined(_WIN32) && !defined(__MACOSX__)
-#define ZENITY_BINARY "/usr/bin/zenity"
-
-// returns non-zero if zenity is available
-
-static int ZenityAvailable(void)
-{
-    return system(ZENITY_BINARY " --help >/dev/null 2>&1") == 0;
 }
 
 // Escape special characters in the given string so that they can be
@@ -318,38 +290,6 @@ static char *EscapeShellString(char *string)
     return result;
 }
 
-// Open a native error box with a message using zenity
-
-static int ZenityErrorBox(char *message)
-{
-    int result;
-    char *escaped_message;
-    char *errorboxpath;
-    static size_t errorboxpath_size;
-
-    if (!ZenityAvailable())
-    {
-        return 0;
-    }
-
-    escaped_message = EscapeShellString(message);
-
-    errorboxpath_size = strlen(ZENITY_BINARY) + strlen(escaped_message) + 19;
-    errorboxpath = malloc(errorboxpath_size);
-    M_snprintf(errorboxpath, errorboxpath_size, "%s --error --text=%s",
-               ZENITY_BINARY, escaped_message);
-
-    result = system(errorboxpath);
-
-    free(errorboxpath);
-    free(escaped_message);
-
-    return result;
-}
-
-#endif /* !defined(_WIN32) && !defined(__MACOSX__) */
-
-
 //
 // I_Error
 //
@@ -363,15 +303,10 @@ void I_Error (char *error, ...)
     atexit_listentry_t *entry;
     boolean exit_gui_popup;
 
-    if (already_quitting)
-    {
+    if (already_quitting) {
         fprintf(stderr, "Warning: recursive call to I_Error detected.\n");
-#if ORIGCODE
-        exit(-1);
-#endif
-    }
-    else
-    {
+        //exit(-1);
+    } else {
         already_quitting = true;
     }
 
@@ -408,62 +343,14 @@ void I_Error (char *error, ...)
     // Pop up a GUI dialog box to show the error message, if the
     // game was not run from the console (and the user will
     // therefore be unable to otherwise see the message).
-    if (exit_gui_popup && !I_ConsoleStdout())
-#ifdef _WIN32
-    {
-        wchar_t wmsgbuf[512];
-
-        MultiByteToWideChar(CP_ACP, 0,
-                            msgbuf, strlen(msgbuf) + 1,
-                            wmsgbuf, sizeof(wmsgbuf));
-
-        MessageBoxW(NULL, wmsgbuf, L"", MB_OK);
-    }
-#elif defined(__MACOSX__)
-    {
-        CFStringRef message;
-	int i;
-
-	// The CoreFoundation message box wraps text lines, so replace
-	// newline characters with spaces so that multiline messages
-	// are continuous.
-
-	for (i = 0; msgbuf[i] != '\0'; ++i)
-        {
-            if (msgbuf[i] == '\n')
-            {
-                msgbuf[i] = ' ';
-            }
-        }
-
-        message = CFStringCreateWithCString(NULL, msgbuf,
-                                            kCFStringEncodingUTF8);
-
-        CFUserNotificationDisplayNotice(0,
-                                        kCFUserNotificationCautionAlertLevel,
-                                        NULL,
-                                        NULL,
-                                        NULL,
-                                        CFSTR(PACKAGE_STRING),
-                                        message,
-                                        NULL);
-    }
-#else
-    {
-        ZenityErrorBox(msgbuf);
-    }
-#endif
+    //if (exit_gui_popup && !I_ConsoleStdout())
+    //{
+    //    ZenityErrorBox(msgbuf);
+    //}
 
     // abort();
-#if ORIGCODE
-    SDL_Quit();
 
-    exit(-1);
-#else
-    while (true)
-    {
-    }
-#endif
+    while(true){}
 }
 
 //

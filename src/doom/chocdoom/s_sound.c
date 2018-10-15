@@ -113,6 +113,7 @@ int snd_channels = 8;
 
 void S_Init(int sfxVolume, int musicVolume)
 {  
+    /*
     int i;
 
     I_PrecacheSounds(S_sfx, NUMSFX);
@@ -141,16 +142,20 @@ void S_Init(int sfxVolume, int musicVolume)
     }
 
     I_AtExit(S_Shutdown, true);
+    */
 }
 
 void S_Shutdown(void)
 {
+    /*
     I_ShutdownSound();
     I_ShutdownMusic();
+    */
 }
 
 static void S_StopChannel(int cnum)
 {
+    /*
     int i;
     channel_t *c;
 
@@ -180,6 +185,7 @@ static void S_StopChannel(int cnum)
         c->sfxinfo->usefulness--;
         c->sfxinfo = NULL;
     }
+    */
 }
 
 //
@@ -190,6 +196,7 @@ static void S_StopChannel(int cnum)
 
 void S_Start(void)
 {
+    /*
     int cnum;
     int mnum;
 
@@ -238,10 +245,12 @@ void S_Start(void)
     }        
 
     S_ChangeMusic(mnum, true);
+    */
 }        
 
 void S_StopSound(mobj_t *origin)
 {
+    /*
     int cnum;
 
     for (cnum=0 ; cnum<snd_channels ; cnum++)
@@ -252,6 +261,7 @@ void S_StopSound(mobj_t *origin)
             break;
         }
     }
+    */
 }
 
 //
@@ -261,6 +271,7 @@ void S_StopSound(mobj_t *origin)
 
 static int S_GetChannel(mobj_t *origin, sfxinfo_t *sfxinfo)
 {
+    /*
     // channel number to use
     int                cnum;
     
@@ -311,6 +322,8 @@ static int S_GetChannel(mobj_t *origin, sfxinfo_t *sfxinfo)
     c->origin = origin;
 
     return cnum;
+    */
+    return 0;
 }
 
 //
@@ -323,6 +336,7 @@ static int S_GetChannel(mobj_t *origin, sfxinfo_t *sfxinfo)
 static int S_AdjustSoundParams(mobj_t *listener, mobj_t *source,
                                int *vol, int *sep)
 {
+    /*
     fixed_t        approx_dist;
     fixed_t        adx;
     fixed_t        ady;
@@ -386,11 +400,13 @@ static int S_AdjustSoundParams(mobj_t *listener, mobj_t *source,
     }
     
     return (*vol > 0);
+    */
+    return 0;
 }
 
 void S_StartSound(void *origin_p, int sfx_id)
 {
-    sfxinfo_t *sfx;
+    /*sfxinfo_t *sfx;
     mobj_t *origin;
     int rc;
     int sep;
@@ -473,6 +489,7 @@ void S_StartSound(void *origin_p, int sfx_id)
     }
 
     channels[cnum].handle = I_StartSound(sfx, cnum, volume, sep);
+    */
 }        
 
 //
@@ -481,20 +498,23 @@ void S_StartSound(void *origin_p, int sfx_id)
 
 void S_PauseSound(void)
 {
-    if (mus_playing && !mus_paused)
-    {
-        I_PauseSong();
-        mus_paused = true;
-    }
+    /*if (mus_playing && !mus_paused)
+      {
+      I_PauseSong();
+      mus_paused = true;
+      }*/
+    mus_paused = true;
 }
 
 void S_ResumeSound(void)
 {
-    if (mus_playing && mus_paused)
+    /*if (mus_playing && mus_paused)
     {
         I_ResumeSong();
         mus_paused = false;
     }
+    */
+        mus_paused = false;
 }
 
 //
@@ -503,6 +523,7 @@ void S_ResumeSound(void)
 
 void S_UpdateSounds(mobj_t *listener)
 {
+    /*
     int                audible;
     int                cnum;
     int                volume;
@@ -544,10 +565,10 @@ void S_UpdateSounds(mobj_t *listener)
                 if (c->origin && listener != c->origin)
                 {
                     audible = S_AdjustSoundParams(listener,
-                                                  c->origin,
-                                                  &volume,
-                                                  &sep);
-                    
+                            c->origin,
+                            &volume,
+                            &sep);
+
                     if (!audible)
                     {
                         S_StopChannel(cnum);
@@ -566,10 +587,12 @@ void S_UpdateSounds(mobj_t *listener)
             }
         }
     }
+    */
 }
 
 void S_SetMusicVolume(int volume)
 {
+    /*
     if (volume < 0 || volume > 127)
     {
         I_Error("Attempt to set music volume at %d",
@@ -577,16 +600,19 @@ void S_SetMusicVolume(int volume)
     }    
 
     I_SetMusicVolume(volume);
+    */
 }
 
 void S_SetSfxVolume(int volume)
 {
+    /*
     if (volume < 0 || volume > 127)
     {
         I_Error("Attempt to set sfx volume at %d", volume);
     }
 
     snd_SfxVolume = volume;
+    */
 }
 
 //
@@ -595,11 +621,12 @@ void S_SetSfxVolume(int volume)
 
 void S_StartMusic(int m_id)
 {
-    S_ChangeMusic(m_id, false);
+    //S_ChangeMusic(m_id, false);
 }
 
 void S_ChangeMusic(int musicnum, int looping)
 {
+    /*
     musicinfo_t *music = NULL;
     char namebuf[9];
     void *handle;
@@ -608,7 +635,7 @@ void S_ChangeMusic(int musicnum, int looping)
     // and d_introa.  The latter is used for OPL playback.
 
     if (musicnum == mus_intro && (snd_musicdevice == SNDDEVICE_ADLIB
-                               || snd_musicdevice == SNDDEVICE_SB))
+                || snd_musicdevice == SNDDEVICE_SB))
     {
         musicnum = mus_introa;
     }
@@ -644,6 +671,7 @@ void S_ChangeMusic(int musicnum, int looping)
     I_PlaySong(handle, looping);
 
     mus_playing = music;
+    */
 }
 
 boolean S_MusicPlaying(void)
@@ -653,6 +681,7 @@ boolean S_MusicPlaying(void)
 
 void S_StopMusic(void)
 {
+    /*
     if (mus_playing)
     {
         if (mus_paused)
@@ -666,5 +695,6 @@ void S_StopMusic(void)
         mus_playing->data = NULL;
         mus_playing = NULL;
     }
+    */
 }
 

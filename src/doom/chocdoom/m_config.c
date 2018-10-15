@@ -1608,7 +1608,7 @@ static const int scantokey[128] =
 
 static void SaveDefaultCollection(default_collection_t *collection)
 {
-#if ORIGCODE
+    /*
     default_t *defaults;
     int i, v;
     FILE *f;
@@ -1708,7 +1708,7 @@ static void SaveDefaultCollection(default_collection_t *collection)
     }
 
     fclose (f);
-#endif
+    */
 }
 
 // Parses integer values in the configuration file
@@ -1770,7 +1770,7 @@ static void SetVariable(default_t *def, char *value)
 
 static void LoadDefaultCollection(default_collection_t *collection)
 {
-#if ORIGCODE
+    /*
     FILE *f;
     default_t *def;
     char defname[80];
@@ -1828,7 +1828,7 @@ static void LoadDefaultCollection(default_collection_t *collection)
     }
 
     fclose (f);
-#endif
+    */
 }
 
 // Set the default filenames to use for configuration files.
@@ -2083,9 +2083,6 @@ void M_SetConfigDir(char *dir)
 char *M_GetSaveGameDir(char *iwadname)
 {
     char *savegamedir;
-#if ORIGCODE
-    char *topdir;
-#endif
 
     // If not "doing" a configuration directory (Windows), don't "do"
     // a savegame directory, either.
