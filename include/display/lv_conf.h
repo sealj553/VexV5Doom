@@ -60,7 +60,8 @@
 #define LV_ANTIALIAS 0 /*1: Enable anti-aliasing*/
 
 /*Screen refresh settings*/
-#define LV_REFR_PERIOD 33   /*Screen refresh period in milliseconds*/
+//28ms = >35fps (doom's refresh rate)
+#define LV_REFR_PERIOD 28   /*Screen refresh period in milliseconds*/
 #define LV_INV_FIFO_SIZE 2 /*The average count of objects on a screen */
 
 /*=================
