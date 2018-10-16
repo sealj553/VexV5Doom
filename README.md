@@ -20,10 +20,7 @@ cd VexV5Doom
 prosv5 make
 prosv5 upload
 ````
-* Prepare the microSD card
-
-The microSD card needs to be formatted as fat32. Copy "doom1.wad" to the microSD card.
-
+* Format the microSD card to fat32 and copy "doom1.wad" to it
 * Insert the microSD card and start the game
 
 ## Controls
