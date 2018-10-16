@@ -4,6 +4,13 @@ This is a port of id Software's DOOM for the Vex V5 Robot Brain, using the [PROS
 
 It's based on floppes' [stm32doom](https://github.com/floppes/stm32doom) port and uses [Chocolate Doom](https://github.com/chocolate-doom/chocolate-doom)'s codebase.
 
+
+![](https://raw.githubusercontent.com/sealj553/VexV5Doom/master/img/pic1.jpg)
+
+
+![](https://raw.githubusercontent.com/sealj553/VexV5Doom/master/img/pic2.jpg)
+
+
 ## Features
 * Play with the Vex controller
 * Save and load games on the microSD card
