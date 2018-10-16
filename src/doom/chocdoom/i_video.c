@@ -117,6 +117,9 @@ static bool run;
 void I_InitGraphics (void)
 {
     I_VideoBuffer = (byte*)Z_Malloc (SCREENWIDTH * SCREENHEIGHT, PU_STATIC, NULL);
+
+    lv_vdb_t *framebuffer = lv_vdb_get();
+    memset((*framebuffer).buf, 0, LV_HOR_RES * LV_VER_RES * sizeof(lv_color_t));
 }
 
 void I_ShutdownGraphics (void)
@@ -202,15 +205,17 @@ void I_StartTic (void) {
 
 void I_UpdateNoBlit(void){}
 
+//scale video height 240
 void I_FinishUpdate(void){
     lv_vdb_t *framebuffer = lv_vdb_get();
 
+    int x_offset = (LV_HOR_RES - SCREENWIDTH)/2;
+    int y_offset = (LV_VER_RES - SCREENHEIGHT)/2;
+
     for (int y = 0; y < SCREENHEIGHT; ++y) {
         for (int x = 0; x < SCREENWIDTH; ++x) {
-            //byte index = I_VideoBuffer[y * SCREENWIDTH + x];
-            //(*framebuffer).buf[x * SCREENWIDTH + (SCREENWIDTH - y - 1)] = rgb888_palette[index];
             byte index = I_VideoBuffer[y * SCREENWIDTH + x];
-            (*framebuffer).buf[y * LV_HOR_RES + x] = rgb888_palette[index];
+            (*framebuffer).buf[(y + y_offset) * LV_HOR_RES + x + x_offset] = rgb888_palette[index];
         }
     }
     lv_vdb_flush();
