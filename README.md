@@ -10,11 +10,13 @@ It's based on floppes' [stm32doom](https://github.com/floppes/stm32doom) port an
 
 ![](https://raw.githubusercontent.com/sealj553/VexV5Doom/master/img/pic2.jpg)
 
+Video: [https://www.youtube.com/watch?v=exjGBy4SHME](https://www.youtube.com/watch?v=exjGBy4SHME)
+
 
 ## Features
 * Play with the Vex controller
-* Save and load games on the microSD card
 * Load standard doom WAD files
+* Save and load games on the microSD card (untested)
 
 ## How to use
 * Clone the repo (or download .ZIP):
