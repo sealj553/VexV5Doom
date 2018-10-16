@@ -22,8 +22,8 @@ prosv5 upload
 ````
 * Prepare the microSD card
 
-The microSD card needs to be formatted as fat32.
-Then copy the `usd` folder (which contains the WAD file) to the microSD card
+The microSD card needs to be formatted as fat32. Copy "doom1.wad" to the microSD card.
+
 * Insert the microSD card and start the game
 
 ## Controls
