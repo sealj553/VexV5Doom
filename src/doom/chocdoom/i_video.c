@@ -44,6 +44,9 @@ static const char rcsid[] = "$Id: i_x.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 extern int key_nextweapon;
 extern int key_prevweapon;
 
+const int x_offset = (LV_HOR_RES - SCREENWIDTH)/2;
+const int y_offset = (LV_VER_RES - SCREENHEIGHT)/2;
+
 void update_controller(void);
 void check_button(int prev, int curr, int action);
 
@@ -208,9 +211,6 @@ void I_UpdateNoBlit(void){}
 //scale video height 240
 void I_FinishUpdate(void){
     lv_vdb_t *framebuffer = lv_vdb_get();
-
-    int x_offset = (LV_HOR_RES - SCREENWIDTH)/2;
-    int y_offset = (LV_VER_RES - SCREENHEIGHT)/2;
 
     for (int y = 0; y < SCREENHEIGHT; ++y) {
         for (int x = 0; x < SCREENWIDTH; ++x) {
