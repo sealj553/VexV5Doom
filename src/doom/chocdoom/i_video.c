@@ -169,7 +169,7 @@ void I_GetEvent (void)
     event.type = ev_joystick;
     event.data1 = 0; //bitfield of buttons
     event.data2 = c_state.a_lx; //x axis mouse (turn)
-    event.data3 = c_state.a_ly; //y axis mouse (forward/backward)
+    event.data3 = -c_state.a_ly; //y axis mouse (forward/backward)
     event.data4 = c_state.a_rx; //3rd axis mouse (strafe)
     D_PostEvent(&event);
 
@@ -207,8 +207,10 @@ void I_FinishUpdate(void){
 
     for (int y = 0; y < SCREENHEIGHT; ++y) {
         for (int x = 0; x < SCREENWIDTH; ++x) {
+            //byte index = I_VideoBuffer[y * SCREENWIDTH + x];
+            //(*framebuffer).buf[x * SCREENWIDTH + (SCREENWIDTH - y - 1)] = rgb888_palette[index];
             byte index = I_VideoBuffer[y * SCREENWIDTH + x];
-            (*framebuffer).buf[x * SCREENWIDTH + (SCREENWIDTH - y - 1)] = rgb888_palette[index];
+            (*framebuffer).buf[y * LV_HOR_RES + x] = rgb888_palette[index];
         }
     }
     lv_vdb_flush();

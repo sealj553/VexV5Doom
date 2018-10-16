@@ -23,12 +23,7 @@
 
 #include <stdarg.h>
 
-#ifdef _WIN32
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#else
 #include <unistd.h>
-#endif
 
 #include "config.h"
 
@@ -37,7 +32,6 @@
 #include "m_argv.h"
 #include "m_config.h"
 #include "m_misc.h"
-//#include "i_joystick.h"
 #include "i_sound.h"
 #include "i_timer.h"
 #include "i_video.h"
@@ -47,13 +41,8 @@
 #include "w_wad.h"
 #include "z_zone.h"
 
-#ifdef __MACOSX__
-#include <CoreFoundation/CFUserNotification.h>
-#endif
-
 #define DEFAULT_RAM 6 /* MiB */
 #define MIN_RAM     6  /* MiB */
-
 
 typedef struct atexit_listentry_s atexit_listentry_t;
 

@@ -6,8 +6,12 @@
  * All other competition modes are blocked by initialize; it is recommended
  * to keep execution time for this mode under a few seconds.
  */
+extern void D_DoomMain(void);
+
 void initialize() {
-	//pros::lcd::initialize();
+    printf("Starting DOOM\n");
+    //task_set_priority(CURRENT_TASK, TASK_PRIORITY_MAX);
+    D_DoomMain();
 }
 
 /**
@@ -15,7 +19,9 @@ void initialize() {
  * the VEX Competition Switch, following either autonomous or opcontrol. When
  * the robot is enabled, this task will exit.
  */
-void disabled() {}
+void disabled() {
+    printf("disabled\n");
+}
 
 /**
  * Runs after initialize(), and before autonomous when connected to the Field

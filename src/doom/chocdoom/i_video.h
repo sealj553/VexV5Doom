@@ -26,19 +26,13 @@
 
 // Screen width and height.
 
-#define SCREENWIDTH LV_HOR_RES
-#define SCREENHEIGHT LV_VER_RES
-//old:320x240
+#define SCREENWIDTH  320
+#define SCREENHEIGHT 200
 
-// Screen width used for "squash" scale functions
+// Screen height used when aspect_ratio_correct=true.
 
-#define SCREENWIDTH_4_3 SCREENWIDTH
-//256
-
-// Screen height used for "stretch" scale functions.
-
-#define SCREENHEIGHT_4_3 SCREENHEIGHT
-//240
+#define SCREENHEIGHT_4_3 240
+#define SCREENWIDTH_4_3 320
 
 #define MAX_MOUSE_BUTTONS 8
 

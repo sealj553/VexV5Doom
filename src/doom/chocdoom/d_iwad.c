@@ -598,7 +598,7 @@ char *D_TryFindWADByName(char *filename)
 
 char *D_FindIWAD(int mask, GameMission_t *mission)
 {
-    char *result;
+    /*char *result;
     char *iwadfile;
     int iwadparm;
     int i;
@@ -643,6 +643,8 @@ char *D_FindIWAD(int mask, GameMission_t *mission)
     }
 
     return result;
+    */
+    return "/usd/doom1.wad";
 }
 
 // Find all IWADs in the IWAD search path matching the given mask.

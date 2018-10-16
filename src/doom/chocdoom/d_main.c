@@ -1155,6 +1155,9 @@ static void LoadIwadDeh(void)
 //
 void D_DoomMain (void)
 {
+
+    puts("entering D_DoomMain");
+
     int p;
     char file[256];
     char demolumpname[9];
