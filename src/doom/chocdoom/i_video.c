@@ -74,6 +74,8 @@ static struct controller_state c_state = { 0 };
 static struct controller_state c_oldstate = { 0 };
 static event_t event;
 
+lv_vdb_t *framebuffer;
+
 // The screen buffer; this is modified to draw things to the screen
 
 byte *I_VideoBuffer = NULL;
@@ -121,7 +123,7 @@ void I_InitGraphics (void)
 {
     I_VideoBuffer = (byte*)Z_Malloc (SCREENWIDTH * SCREENHEIGHT, PU_STATIC, NULL);
 
-    lv_vdb_t *framebuffer = lv_vdb_get();
+    framebuffer = lv_vdb_get();
     memset((*framebuffer).buf, 0, LV_HOR_RES * LV_VER_RES * sizeof(lv_color_t));
 }
 
@@ -210,8 +212,6 @@ void I_UpdateNoBlit(void){}
 
 //scale video height 240
 void I_FinishUpdate(void){
-    lv_vdb_t *framebuffer = lv_vdb_get();
-
     for (int y = 0; y < SCREENHEIGHT; ++y) {
         for (int x = 0; x < SCREENWIDTH; ++x) {
             byte index = I_VideoBuffer[y * SCREENWIDTH + x];
