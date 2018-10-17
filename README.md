@@ -35,16 +35,16 @@ prosv5 upload
 ## Controls
 This can be changed in `src/doom/chocdoom/i_video.c`
 
-* left analog x = turn left/right
+* right analog x = turn left/right
 * left analog y = move forward/back
-* right analog x = strafe left/right
-* a = fire
+* left analog x = strafe left/right
+* r1 = fire
 * b = use
 * x = enter
 * y = escape
 * dpad = arrow keys
-* l1 = prev weapon
-* r1 = next weapon
+* l2 = prev weapon
+* r2 = next weapon
 
 ## Limitations
 Due to hardware limitations, the following is not possible on the V5:
