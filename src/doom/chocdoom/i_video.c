@@ -96,7 +96,7 @@ int usegamma = 0;
 // the values exceed the value of mouse_threshold, they are multiplied
 // by mouse_acceleration to increase the speed.
 
-float mouse_acceleration = 2.0;
+float mouse_acceleration = 4.0;
 int mouse_threshold = 10;
 
 int usemouse = 0;
@@ -171,19 +171,19 @@ void I_GetEvent (void)
     update_controller();
 
     //joystick and strafe
-    //left x = turn left/right
+    //right x = turn left/right
     //left y = move forward/back
-    //right x = strafe left/right
+    //left x = strafe left/right
     event.type = ev_joystick;
     event.data1 = 0; //bitfield of buttons
-    event.data2 = c_state.a_lx; //x axis mouse (turn)
+    event.data2 = c_state.a_rx; //x axis mouse (turn)
     event.data3 = -c_state.a_ly; //y axis mouse (forward/backward)
-    event.data4 = c_state.a_rx; //3rd axis mouse (strafe)
+    event.data4 = c_state.a_lx; //3rd axis mouse (strafe)
     D_PostEvent(&event);
 
     //other buttons
-    //a = fire
-    check_button(c_oldstate.d_a, c_state.d_a, KEY_FIRE);
+    //r1 = fire
+    check_button(c_oldstate.d_r1, c_state.d_r1, KEY_FIRE);
     //b = use
     check_button(c_oldstate.d_b, c_state.d_b, KEY_USE);
     //x = enter
@@ -197,11 +197,11 @@ void I_GetEvent (void)
     check_button(c_oldstate.d_lft, c_state.d_lft, KEY_LEFTARROW);
     check_button(c_oldstate.d_rig, c_state.d_rig, KEY_RIGHTARROW);
 
-    //l1 = prev weapon
-    check_button(c_oldstate.d_l1, c_state.d_l1, key_prevweapon);
+    //l2 = prev weapon
+    check_button(c_oldstate.d_l1, c_state.d_l2, key_prevweapon);
 
-    //r1 = next weapon
-    check_button(c_oldstate.d_r1, c_state.d_r1, key_nextweapon);
+    //r2 = next weapon
+    check_button(c_oldstate.d_r1, c_state.d_r2, key_nextweapon);
 }
 
 void I_StartTic (void) {
