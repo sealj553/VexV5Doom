@@ -12,7 +12,7 @@
 /*******************************************************************/
 
 /* Stack is used in 3rd party user code       */
-_STACK_SIZE = DEFINED(_STACK_SIZE) ? _STACK_SIZE : 0x2000;
+_STACK_SIZE = DEFINED(_STACK_SIZE) ? _STACK_SIZE : 0x10000;
 /* Allocate 16MB of memory to the heap */
 _HEAP_SIZE  = DEFINED(_HEAP_SIZE)  ? _HEAP_SIZE  : 0x1000000;
 

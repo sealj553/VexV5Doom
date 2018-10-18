@@ -212,11 +212,23 @@ void I_UpdateNoBlit(void){}
 
 //scale video height 240
 void I_FinishUpdate(void){
-    for (int y = 0; y < SCREENHEIGHT; ++y) {
-        for (int x = 0; x < SCREENWIDTH; ++x) {
-            byte index = I_VideoBuffer[y * SCREENWIDTH + x];
-            framebuffer->buf[(y + y_offset) * LV_HOR_RES + x + x_offset] = rgb888_palette[index];
+
+    static char scaled[LV_VER_RES * LV_HOR_RES]; 
+
+    //nearest neighbor scaling
+    const static int w1 = SCREENWIDTH, h1 = SCREENHEIGHT, w2 = LV_HOR_RES, h2 = LV_VER_RES;
+    const int x_ratio = ((w1<<16)/w2) + 1;
+    const int y_ratio = ((h1<<16)/h2) + 1;
+    for(int i = 0; i < h2; ++i){
+        for(int j = 0; j < w2; ++j){
+            int x2 = (j*x_ratio)>>16;
+            int y2 = (i*y_ratio)>>16;
+            scaled[(i*w2)+j] = I_VideoBuffer[(y2*w1)+x2];
         }
+    }
+    for(int i = 0; i < LV_VER_RES * LV_HOR_RES; ++i){
+        //uint8_t index = I_VideoBuffer[i];
+        framebuffer->buf[i] = rgb888_palette[scaled[i]];
     }
     lv_vdb_flush();
 }
