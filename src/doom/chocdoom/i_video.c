@@ -227,7 +227,6 @@ void I_FinishUpdate(void){
         }
     }
     for(int i = 0; i < LV_VER_RES * LV_HOR_RES; ++i){
-        //uint8_t index = I_VideoBuffer[i];
         framebuffer->buf[i] = rgb888_palette[scaled[i]];
     }
     lv_vdb_flush();
