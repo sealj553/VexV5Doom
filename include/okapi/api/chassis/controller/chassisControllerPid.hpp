@@ -5,8 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-#ifndef _OKAPI_CHASSISCONTROLLERPID_HPP_
-#define _OKAPI_CHASSISCONTROLLERPID_HPP_
+#pragma once
 
 #include "okapi/api/chassis/controller/chassisController.hpp"
 #include "okapi/api/control/iterative/iterativePosPidController.hpp"
@@ -30,7 +29,7 @@ class ChassisControllerPID : public virtual ChassisController {
    * @param iscales see ChassisScales docs
    */
   ChassisControllerPID(const TimeUtil &itimeUtil,
-                       std::shared_ptr<ChassisModel> imodel,
+                       const std::shared_ptr<ChassisModel> &imodel,
                        std::unique_ptr<IterativePosPIDController> idistanceController,
                        std::unique_ptr<IterativePosPIDController> iangleController,
                        std::unique_ptr<IterativePosPIDController> iturnController,
@@ -125,15 +124,17 @@ class ChassisControllerPID : public virtual ChassisController {
 
   protected:
   Logger *logger;
-  std::unique_ptr<AbstractRate> rate;
+  TimeUtil timeUtil;
   std::unique_ptr<IterativePosPIDController> distancePid;
   std::unique_ptr<IterativePosPIDController> anglePid;
   std::unique_ptr<IterativePosPIDController> turnPid;
   ChassisScales scales;
   AbstractMotor::GearsetRatioPair gearsetRatioPair;
   std::atomic_bool doneLooping{true};
+  std::atomic_bool doneLoopingSeen{true};
   std::atomic_bool newMovement{false};
   std::atomic_bool dtorCalled{false};
+  QTime threadSleepTime{10_ms};
 
   static void trampoline(void *context);
   void loop();
@@ -148,5 +149,3 @@ class ChassisControllerPID : public virtual ChassisController {
   CrossplatformThread *task{nullptr};
 };
 } // namespace okapi
-
-#endif

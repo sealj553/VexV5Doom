@@ -57,19 +57,18 @@
        automatically into RAM)*/
 
 /* Enable anti-aliasing (lines, and radiuses will be smoothed) */
-#define LV_ANTIALIAS 0 /*1: Enable anti-aliasing*/
+#define LV_ANTIALIAS 1 /*1: Enable anti-aliasing*/
 
 /*Screen refresh settings*/
-//28ms = >35fps (doom's refresh rate)
-#define LV_REFR_PERIOD 28   /*Screen refresh period in milliseconds*/
-#define LV_INV_FIFO_SIZE 2 /*The average count of objects on a screen */
+#define LV_REFR_PERIOD 40   /*Screen refresh period in milliseconds*/
+#define LV_INV_FIFO_SIZE 32 /*The average count of objects on a screen */
 
 /*=================
    Misc. setting
  *=================*/
 
 /*Input device settings*/
-#define LV_INDEV_READ_PERIOD 1000 /*Input device read period in milliseconds*/
+#define LV_INDEV_READ_PERIOD 50 /*Input device read period in milliseconds*/
 #define LV_INDEV_POINT_MARKER                                                  \
   0 /*Mark the pressed points  (required: USE_LV_REAL_DRAW = 1)*/
 #define LV_INDEV_DRAG_LIMIT 10 /*Drag threshold in pixels */
@@ -90,9 +89,9 @@
 #define LV_TXT_BREAK_CHARS " ,.;:-_" /*Can break texts on these chars*/
 
 /*Graphics feature usage*/
-#define USE_LV_ANIMATION 0 /*1: Enable all animations*/
-#define USE_LV_SHADOW 0    /*1: Enable shadows*/
-#define USE_LV_GROUP 0     /*1: Enable object groups (for keyboards)*/
+#define USE_LV_ANIMATION 1 /*1: Enable all animations*/
+#define USE_LV_SHADOW 1    /*1: Enable shadows*/
+#define USE_LV_GROUP 1     /*1: Enable object groups (for keyboards)*/
 #define USE_LV_GPU 0       /*1: Enable GPU interface*/
 #define USE_LV_REAL_DRAW                                                       \
   1 /*1: Enable function which draw directly to the frame buffer instead of    \
@@ -110,7 +109,7 @@
 #define USE_LV_THEME_TEMPL 0 /*Just for test*/
 #define USE_LV_THEME_DEFAULT                                                   \
   0 /*Built mainly from the built-in styles. Consumes very few RAM*/
-#define USE_LV_THEME_ALIEN 0 /*Dark futuristic theme*/
+#define USE_LV_THEME_ALIEN 1 /*Dark futuristic theme*/
 #define USE_LV_THEME_NIGHT 0 /*Dark elegant theme*/
 #define USE_LV_THEME_MONO 0  /*Mono color theme for monochrome displays*/
 #define USE_LV_THEME_MATERIAL                                                  \
@@ -151,8 +150,8 @@
 #define USE_PROS_FONT_DEJAVU_MONO_10 0
 #define USE_PROS_FONT_DEJAVU_MONO_10_LATIN_SUP 0
 
-#define USE_PROS_FONT_DEJAVU_MONO_20 0
-#define USE_PROS_FONT_DEJAVU_MONO_LATIN_SUP_20 0
+#define USE_PROS_FONT_DEJAVU_MONO_20 4
+#define USE_PROS_FONT_DEJAVU_MONO_LATIN_SUP_20 4
 
 #define USE_PROS_FONT_DEJAVU_MONO_30 0
 #define USE_PROS_FONT_DEJAVU_MONO_30_LATIN_SUP 0
@@ -206,7 +205,7 @@
 #define USE_LV_WIN 1
 
 /*Tab (dependencies: lv_page, lv_btnm)*/
-#define USE_LV_TABVIEW 0
+#define USE_LV_TABVIEW 1
 #if USE_LV_TABVIEW != 0
 #define LV_TABVIEW_ANIM_TIME                                                   \
   300 /*Time of slide animation [ms] (0: no animation)*/
@@ -217,25 +216,25 @@
  *************************/
 
 /*Bar (dependencies: -)*/
-#define USE_LV_BAR 0
+#define USE_LV_BAR 1
 
 /*Line meter (dependencies: *;)*/
-#define USE_LV_LMETER 0
+#define USE_LV_LMETER 1
 
 /*Gauge (dependencies:bar, lmeter)*/
-#define USE_LV_GAUGE 0
+#define USE_LV_GAUGE 1
 
 /*Chart (dependencies: -)*/
-#define USE_LV_CHART 0
+#define USE_LV_CHART 1
 
 /*LED (dependencies: -)*/
-#define USE_LV_LED 0
+#define USE_LV_LED 1
 
 /*Message box (dependencies: lv_rect, lv_btnm, lv_label)*/
-#define USE_LV_MBOX 0
+#define USE_LV_MBOX 1
 
 /*Text area (dependencies: lv_label, lv_page)*/
-#define USE_LV_TA 0
+#define USE_LV_TA 1
 #if USE_LV_TA != 0
 #define LV_TA_CURSOR_BLINK_TIME 400 /*ms*/
 #define LV_TA_PWD_SHOW_TIME 1500    /*ms*/
@@ -249,17 +248,17 @@
 #define USE_LV_BTN 1
 
 /*Button matrix (dependencies: -)*/
-#define USE_LV_BTNM 0
+#define USE_LV_BTNM 1
 
 /*Keyboard (dependencies: lv_btnm)*/
 #define USE_LV_KB 0
 
 /*Check box (dependencies: lv_btn, lv_label)*/
-#define USE_LV_CB 0
+#define USE_LV_CB 1
 
 /*List (dependencies: lv_page, lv_btn, lv_label, (lv_img optionally for icons
  * ))*/
-#define USE_LV_LIST 0
+#define USE_LV_LIST 1
 #if USE_LV_LIST != 0
 #define LV_LIST_FOCUS_TIME                                                     \
   100 /*Default animation time of focusing to a list element [ms] (0: no       \
@@ -267,14 +266,14 @@
 #endif
 
 /*Drop down list (dependencies: lv_page, lv_label)*/
-#define USE_LV_DDLIST 0
+#define USE_LV_DDLIST 1
 #if USE_LV_DDLIST != 0
 #define LV_DDLIST_ANIM_TIME                                                    \
   200 /*Open and close default animation time [ms] (0: no animation)*/
 #endif
 
 /*Roller (dependencies: lv_ddlist)*/
-#define USE_LV_ROLLER 0
+#define USE_LV_ROLLER 1
 #if USE_LV_ROLLER != 0
 #define LV_ROLLER_ANIM_TIME                                                    \
   200 /*Focus animation time [ms] (0: no                                       \
@@ -282,9 +281,9 @@
 #endif
 
 /*Slider (dependencies: lv_bar)*/
-#define USE_LV_SLIDER 0
+#define USE_LV_SLIDER 1
 
 /*Switch (dependencies: lv_slider)*/
-#define USE_LV_SW 0
+#define USE_LV_SW 1
 
 #endif /*LV_CONF_H*/

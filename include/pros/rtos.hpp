@@ -57,13 +57,18 @@ class Task {
 	Task(task_fn_t function, void* parameters = NULL, std::uint32_t prio = TASK_PRIORITY_DEFAULT,
 	     std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT, const char* name = "");
 	/**
-	 * Creates a new task and add it to the list of tasks that are ready to run.
+	 * Create a C++ task object from a task handle
 	 *
 	 * \param task
 	 *        A task handle from task_create() for which to create a pros::Task
 	 *        object.
 	 */
 	Task(task_t task);
+
+	/**
+	 * Get the currently running Task
+	 */
+	static Task current();
 
 	/**
 	 * Creates a new task and add it to the list of tasks that are ready to run.
@@ -73,6 +78,15 @@ class Task {
 	 *        object.
 	 */
 	void operator=(const task_t in);
+
+	/**
+	 * Removes the Task from the RTOS real time kernel's management. This task
+	 * will be removed from all ready, blocked, suspended and event lists.
+	 *
+	 * Memory dynamically allocated by the task is not automatically freed, and
+	 * should be freed before the task is deleted.
+	 */
+	void remove();
 
 	/**
 	 * Gets the priority of the specified task.
@@ -119,6 +133,13 @@ class Task {
 	 * \return A pointer to the name of the task
 	 */
 	const char* get_name(void);
+
+	/**
+	 * Convert this object to a C task_t handle
+	 */
+	operator task_t() {
+		return task;
+	}
 
 	/**
 	 * Sends a simple notification to task and increments the notification
@@ -203,7 +224,8 @@ class Task {
 	 * will be updated to reflect the time at which the task will unblock.
 	 *
 	 * \param prev_time
-	 *        A pointer to the location storing the setpoint time
+	 *        A pointer to the location storing the setpoint time. This should
+	 *        typically be initialized to the return value from pros::millis().
 	 * \param delta
 	 *        The number of milliseconds to wait (1000 milliseconds per second)
 	 */
