@@ -7,8 +7,7 @@ GCCFLAGS=-ffunction-sections -fdata-sections -fdiagnostics-color
 
 WARNFLAGS+=
 
-SPACE :=
-SPACE +=
+SPACE := $() $()
 COMMA := ,
 
 LIBRARIES+=$(wildcard $(FWDIR)/*.a)
