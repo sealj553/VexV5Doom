@@ -16,7 +16,10 @@ Video: [https://www.youtube.com/watch?v=exjGBy4SHME](https://www.youtube.com/wat
 ## Features
 * Play with the Vex controller
 * Load standard doom WAD files
-* Save and load games on the microSD card (untested)
+
+## Issues
+* Saving a game on the microSD card will crash the program
+* loading games on the microSD card can't happen as to current testing
 
 ## How to use
 * Clone the repo (or download .ZIP):
